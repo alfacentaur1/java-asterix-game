@@ -25,7 +25,7 @@ public class FlappyBird extends Application {
         drawItems(canvas);
 
         Scene scene = new Scene( root,appWidth, appHeight);
-        stage.setTitle("Flappy bird");
+        stage.setTitle("Flappy bird!");
         stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
