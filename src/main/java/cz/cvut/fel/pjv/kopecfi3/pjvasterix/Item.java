@@ -16,5 +16,6 @@ public abstract class Item {
         return y;
     }
 
+    //Asterix will collect items and save them into inventory
     public abstract void collect(Asterix asterix);
 }

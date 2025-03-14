@@ -6,13 +6,8 @@ public class Obelix extends Character {
         super(x, y, health, speed);
     }
 
-
-
     @Override
-    public void move(int x, int y) {
-
-    }
-
+    public void move(int x, int y) {}
     public void giveHint() {
     }
 }

@@ -9,8 +9,6 @@ public class RomanSoldier extends Character implements WarriorStats{
     public RomanSoldier(int x, int y, int health, int speed) {
         super(x, y, health, speed);
 
-        //default heading
-        this.heading = "RIGHT";
     }
 
     @Override

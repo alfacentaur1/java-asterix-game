@@ -7,12 +7,10 @@ public class Panoramix extends Character {
 
 
     @Override
-    public void move(int x, int y) {
+    public void move(int x, int y){}
 
-    }
+    public void craftPotion(String potion) {}
 
-    public void craftPotion(String potion) {
-
-    }
+    public void interact(){}
 }
 
