@@ -29,15 +29,6 @@ public class Asterix extends Character implements WarriorStats{
 
     }
 
-    public ArrayList<Item> getInventory() {
-        return inventory;
-    }
-    public void addItem(Item item) {
-        inventory.add(item);
-    }
-    public void removeItem(Item item) {
-        inventory.remove(item);
-    }
 
     //Depends on which potion will he drink
     public void drinkPotion(){
