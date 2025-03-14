@@ -57,7 +57,7 @@
             <!-- Default configuration for running with: mvn clean javafx:run -->
             <id>default-cli</id>
             <configuration>
-              <mainClass>cz.cvut.fel.pjv.kopecfi3.pjvasterix/cz.cvut.fel.pjv.kopecfi3.pjvasterix.FlappyBird</mainClass>
+              <mainClass>cz.cvut.fel.pjv.kopecfi3.pjvasterix/cz.cvut.fel.pjv.kopecfi3.pjvasterix.ViewController</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>
