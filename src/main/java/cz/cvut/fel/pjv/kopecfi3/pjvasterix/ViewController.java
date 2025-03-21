@@ -9,17 +9,17 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.KeyCode;
+
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 
 public class ViewController extends Application {
     private static final int TILE_SIZE = 64;  // Size of a single tile
-    private static final int MAP_WIDTH = 20;  // Number of tiles in width
-    private static final int MAP_HEIGHT = 20; // Number of tiles in height
+    private static final int MAP_WIDTH = 25;  // Number of tiles in width
+    private static final int MAP_HEIGHT = 25; // Number of tiles in height
     private static final int SCREEN_WIDTH = 8;  // Visible tiles horizontally
     private static final int SCREEN_HEIGHT = 8; // Visible tiles vertically
     private Image grass;
@@ -29,30 +29,40 @@ public class ViewController extends Application {
     private Image house;
     private Canvas canvas;
     private final Set<KeyCode> pressedKeys = new HashSet<>();
+    private Image water;
+    private Image bridgevertical;
+    private Image bridgehorizontal;
 
-    // Tile map definition (0 = path, 1 = house, 2 = grass, 3 = wall vertical, 4 = wall horizontal)
+
+    // Tile map definition (0 = path, 1 = house, 2 = grass, 3 = water, 4 = bridge horizontal)
     private int[][] tileMap = {
-            {2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 1, 1, 2, 2, 0, 0, 0, 2},
-            {2, 1, 1, 2, 0, 2, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 0, 2, 2, 2},
-            {2, 1, 1, 2, 0, 2, 2, 2, 1, 1, 2, 2, 1, 1, 2, 2, 0, 2, 2, 2},
-            {2, 2, 2, 2, 0, 2, 4,4 , 4, 4, 0, 0, 2, 2, 1, 1, 0, 2, 1, 1},
-            {0, 0, 0, 0, 0, 2, 3, 1, 2, 2, 0, 2, 2, 2, 1, 1, 0, 2, 1, 1},
-            {2, 2, 2, 2, 0, 2, 3, 2, 0, 0, 0, 2, 1, 1, 2, 2, 0, 2, 2, 2},
-            {2, 1, 1, 2, 0, 2, 3, 2, 1, 1, 0, 2, 1, 1, 2, 2, 0, 2, 2, 2},
-            {2, 1, 1, 2, 0, 2, 3, 1, 2, 2, 0, 2, 2, 2, 1, 1, 0, 2, 1, 1},
-            {2, 2, 2, 2, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 1, 1},
-            {0, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 2, 2, 2, 1, 1, 0, 2, 2, 2},
-            {2, 2, 2, 2, 0, 2, 2, 2, 0, 0, 0, 2, 1, 1, 2, 2, 0, 2, 2, 2},
-            {2, 1, 1, 2, 0, 2, 2, 2, 1, 1, 0, 2, 1, 1, 2, 2, 0, 2, 1, 1},
-            {2, 1, 1, 2, 0, 2, 1, 1, 2, 2, 0, 2, 2, 2, 1, 1, 0, 2, 1, 1},
-            {2, 2, 2, 2, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2},
-            {0, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 2, 2, 2, 1, 1, 0, 2, 2, 2},
-            {2, 2, 2, 2, 0, 2, 2, 2, 0, 0, 0, 2, 1, 1, 2, 2, 0, 2, 1, 1},
-            {2, 1, 1, 2, 0, 2, 2, 2, 1, 1, 0, 2, 1, 1, 2, 2, 0, 2, 1, 1},
-            {2, 1, 1, 2, 0, 2, 1, 1, 2, 2, 0, 2, 2, 2, 1, 1, 0, 2, 2, 2},
-            {2, 2, 2, 2, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2},
-            {0, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 2, 2, 2, 1, 1, 0, 2, 2, 2}
-    };
+            {2, 2, 2, 2, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 3, 3, 3, 0, 0, 0, 3, 3, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 2, 2, 2, 1, 1, 0, 2, 2, 2, 3, 3, 0, 3, 0, 3, 3, 0, 2, 2},
+    {2, 0, 1, 1, 1, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 3, 3, 0, 0, 0, 0, 0, 3, 2, 2},
+    {2, 0, 1, 0, 0, 1, 0, 2, 0, 3, 0, 0, 3, 0, 3, 0, 3, 0, 0, 0, 0, 3, 3, 0, 0, 0, 3, 3, 2, 2},
+    {2, 0, 1, 1, 1, 1, 0, 2, 0, 3, 0, 0, 3, 0, 3, 0, 3, 0, 0, 0, 0, 3, 3, 0, 0, 0, 3, 3, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 3, 3, 2, 0, 0, 0, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 3, 4, 3, 3, 0, 0, 0, 0, 0, 0, 0, 3, 3, 2, 0, 0, 0, 2, 2},
+    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 4, 4, 0, 3, 3, 0, 3, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2}
+
+};
     private final Asterix player = new Asterix(5, 5, 100);
     private final Villager villager1 = new Villager(20,50,10,40,30,10,120,"y");
     private final RomanSoldier roman1 = new RomanSoldier(120,170,10,100,200,120,150,"x");
@@ -84,6 +94,9 @@ public class ViewController extends Application {
         wall_horizontal = new Image(getClass().getResourceAsStream("/wall-horizontal.png"));
         house = new Image(getClass().getResourceAsStream("/House_Blue.png"));
         path = new Image(getClass().getResourceAsStream("/path.png"));
+        water = new Image(getClass().getResourceAsStream("/water.png"));
+        bridgehorizontal = new Image(getClass().getResourceAsStream("/bridgehorizontal.png"));
+        bridgevertical = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/bridgevertical.png")));
 
         Pane root = new Pane();
         canvas = new Canvas(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE);
@@ -137,10 +150,10 @@ public class ViewController extends Application {
                     gc.drawImage(grass, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 }
                 else if (tileType == 3) {
-                    gc.drawImage(wall_vertical, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    gc.drawImage(water, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 }
                 else {
-                    gc.drawImage(wall_horizontal, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    gc.drawImage(bridgehorizontal, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 }
             }
         }

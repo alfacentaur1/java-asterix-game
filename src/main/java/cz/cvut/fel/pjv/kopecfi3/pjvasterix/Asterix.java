@@ -57,7 +57,7 @@ public class Asterix extends Character {
     public void move(int dx, int dy, int[][] tileMap) {
         int new_x = (int)x + dx;
         int new_y = (int)y + dy;
-        if(getCurrentTile(tileMap,(int)new_x-5,(int)new_y-5) != 1 && getCurrentTile(tileMap,new_x-5,new_y-5) != 3 && getCurrentTile(tileMap,new_x-5,new_y-5) != 4 )
+        if(getCurrentTile(tileMap,(int)new_x-5,(int)new_y-5) != 1 && getCurrentTile(tileMap,new_x-5,new_y-5) != 4 )
         {
             if(new_x >= -5 && new_x < map_width*tile_size && new_y >= -5 && new_y < map_height*tile_size){
                 x = new_x;
