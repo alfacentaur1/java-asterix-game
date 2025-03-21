@@ -2,12 +2,11 @@ package cz.cvut.fel.pjv.kopecfi3.pjvasterix;
 
 public class Obelix extends Character {
 
-    public Obelix(int x, int y, int health, int speed) {
-        super(x, y, health, speed);
+    public Obelix(int x, int y, int health) {
+        super(x, y, health);
     }
 
-    @Override
-    public void move(int x, int y) {}
+    public void move(double x,double y,int [][]tilemap) {}
     public void giveHint() {
     }
 }

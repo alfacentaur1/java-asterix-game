@@ -1,28 +1,25 @@
 package cz.cvut.fel.pjv.kopecfi3.pjvasterix;
 
 abstract class Character {
-    protected int x, y;
+    protected double x, y;
     protected int health;
-    protected int speed;
 
-    public Character(int x, int y, int health, int speed) {
+    public Character(int x, int y, int health) {
         this.x = x;
         this.y = y;
         this.health = health;
-        this.speed = speed;
-    }
 
-    public abstract void move(int x, int y);
+    }
 
     public boolean isAlive() {
         return health > 0;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
@@ -30,9 +27,6 @@ abstract class Character {
         return health;
     }
 
-    public int getSpeed() {
-        return speed;
-    }
 
     public void setX(int x) {
         this.x = x;
@@ -46,7 +40,5 @@ abstract class Character {
         this.health = health;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
+
 }

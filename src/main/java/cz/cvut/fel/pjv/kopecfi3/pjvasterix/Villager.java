@@ -1,69 +1,110 @@
 package cz.cvut.fel.pjv.kopecfi3.pjvasterix;
 
-import java.io.Serializable;
+import javafx.scene.image.Image;
 
-public class Villager extends Character{
-    // Direction ("UP", "DOWN", "LEFT", "RIGHT")
-    private String heading;
-    private int track_x;
-    private int track_y;
-    private int pos_x;
-    private int pos_y;
 
-    public Villager(int x, int y, int health, int speed,int track_x, int track_y) {
-        super(x, y, health, speed);
-        this.track_x = track_x;
-        this.track_y = track_y;
+public class Villager extends Character {
+    private int start_x;
+    private int end_x;
+    private int start_y;
+    private int end_y;
+    private Image playerImage;
+    private String walk_direction; //y or x
+    private double speed = 0.4;
 
+
+    public Villager(int x, int y, int health, int start_x, int end_x, int start_y, int end_y, String walk_direction) {
+        super(x, y, health);
+        this.start_x = start_x;
+        this.end_x = end_x;
+        this.start_y = start_y;
+        this.end_y = end_y;
+
+        this.playerImage = new Image(getClass().getResourceAsStream("/fisherman.png"));
+        this.walk_direction = walk_direction;
     }
 
-    public void setHeading(String heading) {
-        this.heading = heading;
+
+    public int getStart_x() {
+        return start_x;
     }
 
-    public int getTrack_x() {
-        return track_x;
+    public int getEnd_x() {
+        return end_x;
     }
 
-    public void setTrack_x(int track_x) {
-        this.track_x = track_x;
+    public int getStart_y() {
+        return start_y;
     }
 
-    public int getTrack_y() {
-        return track_y;
+    public int getEnd_y() {
+        return end_y;
     }
 
-    public void setTrack_y(int track_y) {
-        this.track_y = track_y;
+    public String getWalk_direction() {
+        return walk_direction;
     }
 
-    public int getPos_x() {
-        return pos_x;
+    public Image getPlayerImage() {
+        return playerImage;
     }
 
-    public void setPos_x(int pos_x) {
-        this.pos_x = pos_x;
+    public void setStart_x(int start_x) {
+        this.start_x = start_x;
     }
 
-    public int getPos_y() {
-        return pos_y;
+    public void setEnd_x(int end_x) {
+        this.end_x = end_x;
     }
 
-    public void setPos_y(int pos_y) {
-        this.pos_y = pos_y;
+    public void setStart_y(int start_y) {
+        this.start_y = start_y;
     }
 
-    @Override
-    public void move(int x, int y) {
-
+    public void setEnd_y(int end_y) {
+        this.end_y = end_y;
     }
 
-    public void turn(String newHeading) {
-        this.heading = newHeading;
+    public void setPlayerImage(Image playerImage) {
+        this.playerImage = playerImage;
     }
 
-    public String getHeading() {
-        return heading;
+    public void setWalk_direction(String walk_direction) {
+        this.walk_direction = walk_direction;
     }
 
+
+    //we walk towards the finish, when we reach it, we switch the final destination to start
+    //if we reached the destination we just mulitply the speed by -1
+
+    public void move() throws InterruptedException {
+
+        System.out.println("Moving " + this.getX() + " " + this.getY());
+        if (this.walk_direction.equals("y")) {
+
+            if (this.y >= this.end_y) {
+                this.speed = -(this.speed);
+            }
+            else if (this.y <= this.start_y) {
+                this.speed = -(this.speed);
+            }
+
+            this.y += this.speed;
+        }
+        else if (this.walk_direction.equals("x")) {
+
+            if (this.x >= this.end_x) {
+                this.speed = -(this.speed);
+            }
+
+            else if (this.x <= this.start_x) {
+                this.speed = (this.speed);
+            }
+
+            this.x += this.speed;
+        }
+
+    }
 }
+
+
