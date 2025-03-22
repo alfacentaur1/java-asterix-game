@@ -193,11 +193,11 @@ public class ViewController extends Application {
 
                                 break;
                             }
-                            if (key == KeyCode.O) {
+                            else if (key == KeyCode.O) {
                                 keyPressed = KeyCode.O;
                                 break;
                             }
-                            if (key == KeyCode.P) {
+                            else if (key == KeyCode.P) {
                                 keyPressed = KeyCode.P;
                                 break;
                             }
