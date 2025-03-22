@@ -7,6 +7,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
@@ -20,8 +21,8 @@ import java.util.Set;
 
 public class ViewController extends Application {
     private static final int TILE_SIZE = 64;  // Size of a single tile
-    private static final int MAP_WIDTH = 25;  // Number of tiles in width
-    private static final int MAP_HEIGHT = 25; // Number of tiles in height
+    private static final int MAP_WIDTH = 15;  // Number of tiles in width
+    private static final int MAP_HEIGHT = 10; // Number of tiles in height
     private static final int SCREEN_WIDTH = 8;  // Visible tiles horizontally
     private static final int SCREEN_HEIGHT = 8; // Visible tiles vertically
     private Image grass;
@@ -42,31 +43,17 @@ public class ViewController extends Application {
 
     // Tile map definition (0 = path, 1 = house, 2 = grass, 3 = water, 4 = bridge horizontal)
     private int[][] tileMap = {
-            {2, 2, 2, 2, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 3, 3, 3, 0, 0, 0, 3, 3, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 2, 2, 2, 1, 1, 0, 2, 2, 2, 3, 3, 0, 3, 0, 3, 3, 0, 2, 2},
-            {2, 0, 1, 1, 1, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 3, 3, 0, 0, 0, 0, 0, 3, 2, 2},
-            {2, 0, 1, 0, 0, 1, 0, 2, 0, 3, 0, 0, 3, 0, 3, 0, 3, 0, 0, 0, 0, 3, 3, 0, 0, 0, 3, 3, 2, 2},
-            {2, 0, 1, 1, 1, 1, 0, 2, 0, 3, 0, 0, 3, 0, 3, 0, 3, 0, 0, 0, 0, 3, 3, 0, 0, 0, 3, 3, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 3, 3, 2, 0, 0, 0, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 3, 4, 3, 3, 0, 0, 0, 0, 0, 0, 0, 3, 3, 2, 0, 0, 0, 2, 2},
-            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 4, 4, 0, 3, 3, 0, 3, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2}
+            {2, 2, 2, 2, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 2, 2, 2, 1},
+            {2, 0, 1, 1, 1, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0},
+            {2, 0, 1, 0, 0, 1, 0, 2, 0, 3, 0, 0, 3, 0, 3},
+            {2, 0, 1, 1, 1, 1, 0, 2, 0, 3, 0, 0, 3, 0, 3},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 3, 3, 3, 3},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 3, 4, 3, 3},
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1}
 
     };
     private final Asterix player = new Asterix(5, 5, 100);
@@ -139,6 +126,7 @@ public class ViewController extends Application {
         drawVillagers(gc);
         drawRomans(gc);
         drawObelix(gc);
+        drawStatusBar(gc);
 
 
         //add keys pressed to the map - get code of the key and call the function
@@ -260,6 +248,7 @@ public class ViewController extends Application {
         drawMap(gc);
         drawItems(gc);
         drawPlayer(gc);
+        drawStatusBar(gc);
 
 
         try {
@@ -339,6 +328,27 @@ public class ViewController extends Application {
         return false;
 
     }
+    private void drawStatusBar(GraphicsContext gc) {
+        double width = canvas.getWidth();
+        double height = canvas.getHeight();
+
+        double x = width - 150;
+        double y = height - 60;
+
+
+        gc.setFill(Color.LIGHTGRAY);
+        gc.fillRoundRect(x, y, 140, 50, 10, 10);
+        gc.setStroke(Color.BLACK);
+        gc.strokeRoundRect(x, y, 140, 50, 10, 10);
+
+
+        gc.setFill(Color.BLACK);
+        gc.setFont(Font.font("Arial", 12));
+        gc.fillText("Health: " + player.getHealth(), x + 10, y + 15);
+        gc.fillText("Speed: " + player.getSpeed(), x + 10, y + 30);
+        gc.fillText("Attack: " + player.getAttackPower(), x + 10, y + 45);
+    }
+
 }
 
 
