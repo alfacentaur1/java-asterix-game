@@ -1,22 +1,23 @@
 package cz.cvut.fel.pjv.kopecfi3.pjvasterix;
 
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
+import javafx.util.Duration;
 
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 
 public class ViewController extends Application {
@@ -39,6 +40,7 @@ public class ViewController extends Application {
     ArrayList<Villager> villagers = new ArrayList<Villager>();
     ArrayList<RomanSoldier> romanSoldiers = new ArrayList<RomanSoldier>();
     ArrayList<Item> items = new ArrayList<Item>();
+    Inventory inventory = new Inventory();
 
 
     // Tile map definition (0 = path, 1 = house, 2 = grass, 3 = water, 4 = bridge horizontal)
@@ -58,7 +60,7 @@ public class ViewController extends Application {
     };
     private final Asterix player = new Asterix(5, 5, 100);
     private final Villager villager1 = new Villager(20, 50, 10, 40, 30, 10, 120, "y");
-    private final RomanSoldier roman1 = new RomanSoldier(120, 170, 10, 100, 200, 120, 150, "x");
+    private final RomanSoldier roman1 = new RomanSoldier(120, 170, 3, 100, 200, 120, 150, "x");
     private final Obelix obelix = new Obelix(40, 100, 10);
     private final Panoramix panoramix = new Panoramix(100, 100, 10);
     private final Carrot carrot = new Carrot(200, 100);
@@ -109,6 +111,7 @@ public class ViewController extends Application {
         bridgehorizontal = new Image(getClass().getResourceAsStream("/bridgehorizontal.png"));
         bridgevertical = new Image(getClass().getResourceAsStream("/bridgevertical.png"));
         asterixattack = new Image(getClass().getResourceAsStream("/asterixattack.png"));
+        Image asterix = new Image(getClass().getResourceAsStream("/asterix.png"));
 
 
         Pane root = new Pane();
@@ -135,6 +138,34 @@ public class ViewController extends Application {
             handleMovement();
             
         });
+        scene.setOnMousePressed(event -> {
+            if (event.getButton() == MouseButton.SECONDARY) {
+                player.attack(player, romanSoldiers, TILE_SIZE);
+                player.setPlayerImage(asterixattack);
+                Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), e -> {
+                    player.setPlayerImage(asterix);
+                }));
+                timeline.setCycleCount(1); //only once
+                timeline.play();
+            }
+            if (event.getButton() == MouseButton.PRIMARY) {
+                double mouseX = event.getX();
+                double mouseY = event.getY();
+                System.out.println(mouseX);
+                System.out.println(mouseY);
+
+                Item itemToAdd = inventory.searchItems(items,mouseX,mouseY,TILE_SIZE,player);
+                if(itemToAdd != null){
+                    if(inventory.getSize()<6 || inventory == null){
+                        inventory.addItem(itemToAdd);
+                        System.out.println("listing....");
+                        inventory.listInventory();
+                    }
+                }
+
+
+
+            }});
         //on release delete by code in hashmap
         scene.setOnKeyReleased(event -> pressedKeys.remove(event.getCode()));
 
@@ -143,6 +174,8 @@ public class ViewController extends Application {
             public void handle(long now) {
                 GraphicsContext gc = canvas.getGraphicsContext2D();
                 redraw(gc);
+                player.checkForAttacks(player,romanSoldiers,TILE_SIZE );
+                RomanSoldier.checkForEnd(romanSoldiers);
 
 
                 if (interactObelix()) {
@@ -175,14 +208,17 @@ public class ViewController extends Application {
                             String upgrade = panoramix.craftPotion(keyPressed, gc);
                             switch (upgrade) {
                                 case "speed":
+                                    inventory = new Inventory();
                                     System.out.println("Potion: Speed crafted!");
                                     player.setSpeed(player.getSpeed()*2);
                                     break;
                                 case "health":
+                                    inventory = new Inventory();
                                     System.out.println("Potion: Health crafted!");
                                     player.setHealth(10);
                                     break;
                                 case "attack":
+                                    inventory = new Inventory();
                                     System.out.println("Potion: Attack crafted!");
                                     player.setAttackPower(3);
                                     break;
@@ -293,7 +329,22 @@ public class ViewController extends Application {
 
     private void drawRomans(GraphicsContext gc) {
         for (RomanSoldier r : romanSoldiers) {
+            // Vykreslení vojáka
             gc.drawImage(r.getPlayerImage(), r.getX(), r.getY(), TILE_SIZE / 1.8, TILE_SIZE / 1.8);
+
+            double healthBarWidth = 20;
+            double healthBarHeight = 5;
+            double healthPercentage = (double) r.getHealth() / 3;
+            double currentHealthWidth = healthBarWidth * healthPercentage;
+
+
+            double healthBarX = r.getX()+8;
+            double healthBarY = r.getY()-6;
+
+            gc.setFill(Color.RED);
+            //rectangle
+            gc.fillRect(healthBarX, healthBarY, currentHealthWidth, healthBarHeight);
+
         }
     }
 
@@ -349,7 +400,16 @@ public class ViewController extends Application {
         gc.fillText("Attack: " + player.getAttackPower(), x + 10, y + 45);
     }
 
+
+
+
 }
+
+
+
+
+
+
 
 
 

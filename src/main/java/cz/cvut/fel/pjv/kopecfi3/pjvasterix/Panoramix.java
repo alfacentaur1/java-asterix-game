@@ -1,9 +1,12 @@
 package cz.cvut.fel.pjv.kopecfi3.pjvasterix;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 
@@ -70,6 +73,7 @@ public class Panoramix extends Character {
         if(keyPressed == KeyCode.I){
             gc.fillText("You gained attack potion.", x + 10, yPos + 30);
             return "attack";
+
         }else if(keyPressed == KeyCode.O){
             gc.fillText("You gained health potion.", x + 10, yPos + 30);
             return "health";
@@ -77,6 +81,7 @@ public class Panoramix extends Character {
             gc.fillText("You gained speed potion.", x + 10, yPos + 30);
             return "speed";
         }
+
 
     }
 }

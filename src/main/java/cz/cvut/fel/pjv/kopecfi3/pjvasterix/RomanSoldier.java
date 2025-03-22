@@ -2,6 +2,8 @@ package cz.cvut.fel.pjv.kopecfi3.pjvasterix;
 
 import javafx.scene.image.Image;
 
+import java.util.ArrayList;
+
 
 public class RomanSoldier extends Character {
     private int start_x;
@@ -11,7 +13,6 @@ public class RomanSoldier extends Character {
     private Image playerImage;
     private String walk_direction; //y or x
     private double speed = 0.3;
-    private int attackPower = 1;
 
 
     public RomanSoldier(int x, int y, int health, int start_x, int end_x, int start_y, int end_y, String walk_direction) {
@@ -102,6 +103,19 @@ public class RomanSoldier extends Character {
             this.x += this.speed;
         }
 
+    }
+
+    public void decreaseHealth(){
+        this.health--;
+    }
+    public static void checkForEnd(ArrayList<RomanSoldier> romanSoldiers) {
+        int counter = 0;
+        for(RomanSoldier romanSoldier : romanSoldiers) {
+            counter++;
+        }
+        if(counter <1){
+            System.exit(0);
+        }
     }
 }
 
