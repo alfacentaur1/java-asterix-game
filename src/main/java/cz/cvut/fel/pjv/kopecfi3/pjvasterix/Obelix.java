@@ -1,12 +1,18 @@
 package cz.cvut.fel.pjv.kopecfi3.pjvasterix;
 
-public class Obelix extends Character {
+import javafx.scene.image.Image;
 
+public class Obelix extends Character {
+    private Image image;
     public Obelix(int x, int y, int health) {
         super(x, y, health);
+        image = new Image(getClass().getResourceAsStream("/obelix.png"));
     }
 
-    public void move(double x,double y,int [][]tilemap) {}
+    public Image getImage() {
+        return image;
+    }
+
     public void giveHint() {
     }
 }

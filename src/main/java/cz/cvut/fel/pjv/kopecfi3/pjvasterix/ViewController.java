@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -32,6 +33,9 @@ public class ViewController extends Application {
     private Image water;
     private Image bridgevertical;
     private Image bridgehorizontal;
+    ArrayList<Villager> villagers = new ArrayList<Villager>();
+    ArrayList<RomanSoldier> romanSoldiers = new ArrayList<RomanSoldier>();
+    ArrayList<Item> items = new ArrayList<Item>();
 
 
     // Tile map definition (0 = path, 1 = house, 2 = grass, 3 = water, 4 = bridge horizontal)
@@ -66,6 +70,19 @@ public class ViewController extends Application {
     private final Asterix player = new Asterix(5, 5, 100);
     private final Villager villager1 = new Villager(20,50,10,40,30,10,120,"y");
     private final RomanSoldier roman1 = new RomanSoldier(120,170,10,100,200,120,150,"x");
+    private final Obelix obelix = new Obelix(40,100,10);
+    private final Panoramix panoramix = new Panoramix(100,100,10);
+    private final Carrot carrot = new Carrot(200,100);
+    private final Shroom shroom = new Shroom(500,100);
+    private final WaterBucket waterBucket = new WaterBucket(400,100);
+
+    public ViewController() {
+        villagers.add(villager1);
+        romanSoldiers.add(roman1);
+        items.add(carrot);
+        items.add(shroom);
+        items.add(waterBucket);
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -108,9 +125,12 @@ public class ViewController extends Application {
 
         stage.setScene(scene);
         stage.setTitle("Asterix RPG");
+        drawItems(gc);
         drawPlayer(gc);
         drawVillagers(gc);
         drawRomans(gc);
+        drawObelix(gc);
+
 
 
         //add keys pressed to the map - get code of the key and call the function
@@ -175,7 +195,9 @@ public class ViewController extends Application {
 
     private void redraw(GraphicsContext gc) {
         drawMap(gc);
+        drawItems(gc);
         drawPlayer(gc);
+
 
         try{
             villager1.move();
@@ -185,6 +207,9 @@ public class ViewController extends Application {
         }
         drawVillagers(gc);
         drawRomans(gc);
+        drawObelix(gc);
+        drawPanoramix(gc);
+
     }
     private void handleMovement() {
         int dx = 0;
@@ -207,13 +232,33 @@ public class ViewController extends Application {
 
     }
     private void drawVillagers(GraphicsContext gc) {
-        gc.drawImage(villager1.getPlayerImage(), villager1.getX(), villager1.getY(), TILE_SIZE/2.2, TILE_SIZE/2.2);
+        for(Villager v : villagers) {
+            gc.drawImage(v.getPlayerImage(), v.getX(), v.getY(), TILE_SIZE/2.2, TILE_SIZE/2.2);
+        }
     }
 
     private void drawRomans(GraphicsContext gc) {
-        gc.drawImage(roman1.getPlayerImage(), roman1.getX(), roman1.getY(), TILE_SIZE/1.8, TILE_SIZE/1.8);
+        for (RomanSoldier r : romanSoldiers) {
+            gc.drawImage(r.getPlayerImage(), r.getX(), r.getY(), TILE_SIZE / 1.8, TILE_SIZE / 1.8);
+        }
+    }
+
+    private void drawObelix(GraphicsContext gc){
+            gc.drawImage(obelix.getImage(), obelix.getX(), obelix.getY(), TILE_SIZE/1.2, TILE_SIZE/1.2);
+        }
+    private void drawPanoramix(GraphicsContext gc){
+        gc.drawImage(panoramix.getImage(), panoramix.getX(), panoramix.getY(), TILE_SIZE/1.2, TILE_SIZE/1.2);
+    }
+
+    private void drawItems(GraphicsContext gc) {
+        for (Item item : items) {
+            gc.drawImage(item.getImage(), item.getX(), item.getY(), TILE_SIZE/1.2, TILE_SIZE/1.2);
+
+        }
     }
 
     }
+
+
 
 
