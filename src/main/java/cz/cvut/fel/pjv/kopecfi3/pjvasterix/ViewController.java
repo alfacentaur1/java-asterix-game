@@ -219,7 +219,7 @@ public class ViewController extends Application {
                                     break;
                                 case "attack":
                                     inventory = new Inventory();
-                                    System.out.println("Potion: Attack crafted! ");
+                                    System.out.println("Potion: Attack crafted!");
                                     player.setAttackPower(3);
                                     break;
                             }
