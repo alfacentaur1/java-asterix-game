@@ -83,27 +83,24 @@ public class Villager extends Character {
 
             if (this.y >= this.end_y) {
                 this.speed = -(this.speed);
-            }
-            else if (this.y <= this.start_y) {
+            } else if (this.y <= this.start_y) {
                 this.speed = -(this.speed);
             }
 
             this.y += this.speed;
-        }
-        else if (this.walk_direction.equals("x")) {
+        } else if (this.walk_direction.equals("x")) {
 
             if (this.x >= this.end_x) {
                 this.speed = -(this.speed);
-            }
-
-            else if (this.x <= this.start_x) {
+            } else if (this.x <= this.start_x) {
                 this.speed = (this.speed);
             }
 
             this.x += this.speed;
         }
+    }
 
     }
-}
+
 
 
