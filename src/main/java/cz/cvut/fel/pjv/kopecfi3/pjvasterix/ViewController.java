@@ -7,6 +7,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 
@@ -25,6 +26,7 @@ public class ViewController extends Application {
     private static final int SCREEN_HEIGHT = 8; // Visible tiles vertically
     private Image grass;
     private Image wall_vertical;
+    private Image asterixattack;
     private Image path;
     private Image wall_horizontal;
     private Image house;
@@ -41,40 +43,40 @@ public class ViewController extends Application {
     // Tile map definition (0 = path, 1 = house, 2 = grass, 3 = water, 4 = bridge horizontal)
     private int[][] tileMap = {
             {2, 2, 2, 2, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 3, 3, 3, 0, 0, 0, 3, 3, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 2, 2, 2, 1, 1, 0, 2, 2, 2, 3, 3, 0, 3, 0, 3, 3, 0, 2, 2},
-    {2, 0, 1, 1, 1, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 3, 3, 0, 0, 0, 0, 0, 3, 2, 2},
-    {2, 0, 1, 0, 0, 1, 0, 2, 0, 3, 0, 0, 3, 0, 3, 0, 3, 0, 0, 0, 0, 3, 3, 0, 0, 0, 3, 3, 2, 2},
-    {2, 0, 1, 1, 1, 1, 0, 2, 0, 3, 0, 0, 3, 0, 3, 0, 3, 0, 0, 0, 0, 3, 3, 0, 0, 0, 3, 3, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 3, 3, 2, 0, 0, 0, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 3, 4, 3, 3, 0, 0, 0, 0, 0, 0, 0, 3, 3, 2, 0, 0, 0, 2, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 4, 4, 0, 3, 3, 0, 3, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
-    {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2}
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 2, 2, 2, 1, 1, 0, 2, 2, 2, 3, 3, 0, 3, 0, 3, 3, 0, 2, 2},
+            {2, 0, 1, 1, 1, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 3, 3, 0, 0, 0, 0, 0, 3, 2, 2},
+            {2, 0, 1, 0, 0, 1, 0, 2, 0, 3, 0, 0, 3, 0, 3, 0, 3, 0, 0, 0, 0, 3, 3, 0, 0, 0, 3, 3, 2, 2},
+            {2, 0, 1, 1, 1, 1, 0, 2, 0, 3, 0, 0, 3, 0, 3, 0, 3, 0, 0, 0, 0, 3, 3, 0, 0, 0, 3, 3, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 3, 3, 2, 0, 0, 0, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 3, 4, 3, 3, 0, 0, 0, 0, 0, 0, 0, 3, 3, 2, 0, 0, 0, 2, 2},
+            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 4, 4, 0, 3, 3, 0, 3, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2},
+            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1, 1, 0, 2, 2, 2, 2, 3, 3, 0, 3, 3, 0, 3, 2, 2}
 
-};
+    };
     private final Asterix player = new Asterix(5, 5, 100);
-    private final Villager villager1 = new Villager(20,50,10,40,30,10,120,"y");
-    private final RomanSoldier roman1 = new RomanSoldier(120,170,10,100,200,120,150,"x");
-    private final Obelix obelix = new Obelix(40,100,10);
-    private final Panoramix panoramix = new Panoramix(100,100,10);
-    private final Carrot carrot = new Carrot(200,100);
-    private final Shroom shroom = new Shroom(500,100);
-    private final WaterBucket waterBucket = new WaterBucket(400,100);
+    private final Villager villager1 = new Villager(20, 50, 10, 40, 30, 10, 120, "y");
+    private final RomanSoldier roman1 = new RomanSoldier(120, 170, 10, 100, 200, 120, 150, "x");
+    private final Obelix obelix = new Obelix(40, 100, 10);
+    private final Panoramix panoramix = new Panoramix(100, 100, 10);
+    private final Carrot carrot = new Carrot(200, 100);
+    private final Shroom shroom = new Shroom(500, 100);
+    private final WaterBucket waterBucket = new WaterBucket(400, 100);
 
     public ViewController() {
         villagers.add(villager1);
@@ -87,18 +89,23 @@ public class ViewController extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
     public static int getTILE_SIZE() {
         return TILE_SIZE;
     }
+
     public static int getScreenWidth() {
         return SCREEN_WIDTH;
     }
+
     public static int getScreenHeight() {
         return SCREEN_HEIGHT;
     }
+
     public static int getMapWidth() {
         return MAP_WIDTH;
     }
+
     public static int getMapHeight() {
         return MAP_HEIGHT;
     }
@@ -113,7 +120,9 @@ public class ViewController extends Application {
         path = new Image(getClass().getResourceAsStream("/path.png"));
         water = new Image(getClass().getResourceAsStream("/water.png"));
         bridgehorizontal = new Image(getClass().getResourceAsStream("/bridgehorizontal.png"));
-        bridgevertical = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/bridgevertical.png")));
+        bridgevertical = new Image(getClass().getResourceAsStream("/bridgevertical.png"));
+        asterixattack = new Image(getClass().getResourceAsStream("/asterixattack.png"));
+
 
         Pane root = new Pane();
         canvas = new Canvas(MAP_WIDTH * TILE_SIZE, MAP_HEIGHT * TILE_SIZE);
@@ -132,20 +141,85 @@ public class ViewController extends Application {
         drawObelix(gc);
 
 
-
         //add keys pressed to the map - get code of the key and call the function
         scene.setOnKeyPressed(event -> {
             pressedKeys.add(event.getCode());
             handleMovement();
+            
         });
         //on release delete by code in hashmap
         scene.setOnKeyReleased(event -> pressedKeys.remove(event.getCode()));
+
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                redraw(canvas.getGraphicsContext2D());
+                GraphicsContext gc = canvas.getGraphicsContext2D();
+                redraw(gc);
+
+
+                if (interactObelix()) {
+                    obelix.talk(gc);
+                }
+
+                if (interactPanoramix()) {
+                    if (panoramix.enoughResources(gc) )
+                     {
+
+                        KeyCode keyPressed = null;
+                        for (KeyCode key : pressedKeys) {
+                            if (key == KeyCode.I) {
+                                keyPressed = KeyCode.I;
+
+                                break;
+                            }
+                            if (key == KeyCode.O) {
+                                keyPressed = KeyCode.O;
+                                break;
+                            }
+                            if (key == KeyCode.P) {
+                                keyPressed = KeyCode.P;
+                                break;
+                            }
+
+                        }
+
+                        if (keyPressed != null) {
+                            String upgrade = panoramix.craftPotion(keyPressed, gc);
+                            switch (upgrade) {
+                                case "speed":
+                                    System.out.println("Potion: Speed crafted!");
+                                    player.setSpeed(player.getSpeed()*2);
+                                    break;
+                                case "health":
+                                    System.out.println("Potion: Health crafted!");
+                                    player.setHealth(10);
+                                    break;
+                                case "attack":
+                                    System.out.println("Potion: Attack crafted!");
+                                    player.setAttackPower(3);
+                                    break;
+                            }
+                        }
+
+                    } else {
+                        //not enough resources
+                        double x = panoramix.getX();
+                        double yPos = panoramix.getY() - 40;
+                        gc.setFill(javafx.scene.paint.Color.WHITE);
+                        gc.fillRoundRect(x, yPos, 220, 60, 10, 10);
+                        gc.setStroke(javafx.scene.paint.Color.BLACK);
+                        gc.strokeRoundRect(x, yPos, 220, 60, 10, 10);
+                        gc.setFill(javafx.scene.paint.Color.BLACK);
+                        gc.setFont(Font.font("Times New Roman", 10));
+                        gc.fillText("Asterix, you don't have enough resources.", x + 10, yPos + 15);
+                        gc.fillText("Come back later.", x + 10, yPos + 30);
+                        gc.fillText("Now go away, I'm busy!", x + 10, yPos + 45);
+                    }
+                }
             }
+
         };
+
         gameLoop.start();
         stage.show();
         root.requestFocus();
@@ -165,44 +239,33 @@ public class ViewController extends Application {
                     gc.drawImage(path, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 } else if (tileType == 1) {
                     gc.drawImage(house, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-                }
-                else if (tileType == 2) {
+                } else if (tileType == 2) {
                     gc.drawImage(grass, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-                }
-                else if (tileType == 3) {
+                } else if (tileType == 3) {
                     gc.drawImage(water, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-                }
-                else {
+                } else {
                     gc.drawImage(bridgehorizontal, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
                 }
             }
         }
     }
-    private Image getTileImage(int tileType) {
-        switch (tileType) {
-            case 0: return path;
-            case 1: return house;
-            case 2: return grass;
-            case 3: return wall_vertical;
-            case 4: return wall_horizontal;
-            default: return grass;
-        }
-    }
+
+
 
     private void drawPlayer(GraphicsContext gc) {
-        gc.drawImage(player.getPlayerImage(), player.getX(), player.getY(), TILE_SIZE, TILE_SIZE);
+        gc.drawImage(player.getPlayerImage(), player.getX(), player.getY(), TILE_SIZE/2.2, TILE_SIZE/2.2);
     }
-
+    //redraw the map on every iteration of game loop
     private void redraw(GraphicsContext gc) {
         drawMap(gc);
         drawItems(gc);
         drawPlayer(gc);
 
 
-        try{
+        try {
             villager1.move();
             roman1.move();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         drawVillagers(gc);
@@ -211,29 +274,31 @@ public class ViewController extends Application {
         drawPanoramix(gc);
 
     }
+
     private void handleMovement() {
         int dx = 0;
         int dy = 0;
         if (pressedKeys.contains(KeyCode.W)) {
-            dy = -1;
+            dy = -1* player.getSpeed();
         }
         if (pressedKeys.contains(KeyCode.S)) {
-            dy = 1;
+            dy = 1* player.getSpeed();
         }
         if (pressedKeys.contains(KeyCode.A)) {
-            dx = -1;
+            dx = -1* player.getSpeed();
         }
         if (pressedKeys.contains(KeyCode.D)) {
-            dx = 1;
+            dx = 1* player.getSpeed();
         }
 
         player.move(dx, dy, tileMap);
         redraw(canvas.getGraphicsContext2D());
 
     }
+
     private void drawVillagers(GraphicsContext gc) {
-        for(Villager v : villagers) {
-            gc.drawImage(v.getPlayerImage(), v.getX(), v.getY(), TILE_SIZE/2.2, TILE_SIZE/2.2);
+        for (Villager v : villagers) {
+            gc.drawImage(v.getPlayerImage(), v.getX(), v.getY(), TILE_SIZE / 2.2, TILE_SIZE / 2.2);
         }
     }
 
@@ -243,21 +308,40 @@ public class ViewController extends Application {
         }
     }
 
-    private void drawObelix(GraphicsContext gc){
-            gc.drawImage(obelix.getImage(), obelix.getX(), obelix.getY(), TILE_SIZE/1.2, TILE_SIZE/1.2);
-        }
-    private void drawPanoramix(GraphicsContext gc){
-        gc.drawImage(panoramix.getImage(), panoramix.getX(), panoramix.getY(), TILE_SIZE/1.2, TILE_SIZE/1.2);
+    private void drawObelix(GraphicsContext gc) {
+        gc.drawImage(obelix.getImage(), obelix.getX(), obelix.getY(), TILE_SIZE / 1.2, TILE_SIZE / 1.2);
+    }
+
+    private void drawPanoramix(GraphicsContext gc) {
+        gc.drawImage(panoramix.getImage(), panoramix.getX(), panoramix.getY(), TILE_SIZE / 1.2, TILE_SIZE / 1.2);
     }
 
     private void drawItems(GraphicsContext gc) {
         for (Item item : items) {
-            gc.drawImage(item.getImage(), item.getX(), item.getY(), TILE_SIZE/1.2, TILE_SIZE/1.2);
+            gc.drawImage(item.getImage(), item.getX(), item.getY(), TILE_SIZE / 1.2, TILE_SIZE / 1.2);
 
         }
     }
+    // If obelix position is closer than one tile, start the conversation
+    private boolean interactObelix() {
+        if (Math.abs(player.getX() - obelix.getX()) < TILE_SIZE/3.5 &&
+                Math.abs(player.getY() - obelix.getY()) < TILE_SIZE/3.5) {
+            return true;
+        }
+        return false;
 
     }
+    private boolean interactPanoramix() {
+        if (Math.abs(player.getX() - panoramix.getX()) < TILE_SIZE/3.5 &&
+                Math.abs(player.getY() - panoramix.getY()) < TILE_SIZE/3.5) {
+            return true;
+        }
+        return false;
+
+    }
+}
+
+
 
 
 

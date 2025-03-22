@@ -8,23 +8,24 @@ import java.awt.image.BufferedImage;
 
 
 public class Asterix extends Character {
-    private int attackPower;
+    private int attackPower = 1;
     private double prevX, prevY;
-    private ArrayList<Item> inventory = new ArrayList<Item>();
     private final int tile_size = ViewController.getTILE_SIZE();
-    private final int screen_width = ViewController.getScreenWidth();
-    private final int screen_height = ViewController.getScreenHeight();
     private final int map_width = ViewController.getMapWidth();
     private final int map_height = ViewController.getMapHeight();
     private Image playerImage;
+    private int speed = 1;
 
     public int getAttackPower() {
         return attackPower;
     }
 
+    public int getSpeed() {
+        return speed;
+    }
 
-    public ArrayList<Item> getInventory() {
-        return inventory;
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
     public Image getPlayerImage() {
@@ -39,25 +40,21 @@ public class Asterix extends Character {
         return prevY;
     }
 
-    public Asterix(double x, double y, int health) {
-        super(10, 10, health);
+    public Asterix(double x, double y,int health) {
+        super(10, 10, 10);
         this.playerImage = new Image(getClass().getResourceAsStream("/asterix.png"));
         this.prevX = x;
         this.prevY = y;
     }
 
-    public int getStrength() {
-        return attackPower;
-    }
-
-    public void setStrength(int attackPower) {
+    public void setAttackPower(int attackPower) {
         this.attackPower = attackPower;
     }
 
     public void move(int dx, int dy, int[][] tileMap) {
         int new_x = (int)x + dx;
         int new_y = (int)y + dy;
-        if(getCurrentTile(tileMap,(int)new_x-5,(int)new_y-5) != 1 && getCurrentTile(tileMap,new_x-5,new_y-5) != 4 )
+        if(getCurrentTile(tileMap,(int)new_x-5,(int)new_y-5) != 1 && getCurrentTile(tileMap,new_x-5,new_y-5) != 3 )
         {
             if(new_x >= -5 && new_x < map_width*tile_size && new_y >= -5 && new_y < map_height*tile_size){
                 x = new_x;
@@ -67,15 +64,14 @@ public class Asterix extends Character {
     }
 
     public int getCurrentTile(int[][] tileMap, int x, int y) {
-        int tileX = (x+38) / tile_size;
-        int tileY = (y+46) / tile_size;
+        int tileX = (x+19) / tile_size;
+        int tileY = (y+23) / tile_size;
 
         if (tileX >= 0 && tileX < tileMap[0].length && tileY >= 0 && tileY < tileMap.length) {
-            System.out.println("current tile: " + tileMap[tileY][tileX]);
             return tileMap[tileY][tileX];
         }
 
-        return -1;
+        return 0;
     }
 
 
@@ -84,10 +80,6 @@ public class Asterix extends Character {
         }
 
 
-        //Depends on which potion will he drink
-        public void drinkPotion () {
-
-        }
 
 
     }

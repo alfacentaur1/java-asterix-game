@@ -79,7 +79,6 @@ public class Villager extends Character {
 
     public void move() throws InterruptedException {
 
-        System.out.println("Moving " + this.getX() + " " + this.getY());
         if (this.walk_direction.equals("y")) {
 
             if (this.y >= this.end_y) {

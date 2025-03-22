@@ -11,6 +11,7 @@ public class RomanSoldier extends Character {
     private Image playerImage;
     private String walk_direction; //y or x
     private double speed = 0.3;
+    private int attackPower = 1;
 
 
     public RomanSoldier(int x, int y, int health, int start_x, int end_x, int start_y, int end_y, String walk_direction) {
@@ -75,7 +76,6 @@ public class RomanSoldier extends Character {
     //we walk towards the finish, when we reach it, we switch the final destination to start
     //if we reached the destination we just multiply the speed by -1
     public void move() throws InterruptedException {
-        System.out.println("current x is " + getX());
         if (this.walk_direction.equals("y")) {
 
             if (this.y >= this.end_y) {
