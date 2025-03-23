@@ -418,29 +418,36 @@ public class ViewController extends Application {
     }
 
     private void drawStatusBar(GraphicsContext gc) {
-        double healthBarWidth = 20;
-        double healthBarHeight = 5;
-        double healthPercentage = (double) player.getHealth() / 3;
-        double currentHealthWidth = healthBarWidth * (healthPercentage/3);
+        double statusBarX = canvas.getWidth()-200;
+        double statusBarY = canvas.getHeight() - 60;
+
+        double healthBarWidth = 100;
+        double healthBarHeight = 10;
+        double healthPercentage = (double) player.getHealth()*10 / 100;
+        double currentHealthWidth = healthBarWidth * healthPercentage;
 
 
-        double healthBarX = player.getX()+4;
-        double healthBarY = player.getY()-6;
+        gc.setFill(Color.DARKGRAY);
+        gc.fillRect(statusBarX, statusBarY - 10, 180, 60);
+
 
         gc.setFill(Color.RED);
-        gc.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+        gc.fillRect(statusBarX + 40, statusBarY, healthBarWidth, healthBarHeight);
 
         gc.setFill(Color.GREEN);
-        gc.fillRect(healthBarX, healthBarY, currentHealthWidth, healthBarHeight);
+        gc.fillRect(statusBarX + 40, statusBarY, currentHealthWidth, healthBarHeight);
 
-        gc.setFill(Color.WHITE);
-        gc.setFont(new Font(8));
-        gc.fillText("Speed: " + player.getSpeed(), player.getX(), player.getY()-9);
-        gc.setFill(Color.WHITE);
-        gc.setFont(new Font(8));
-        gc.fillText("Strength: " + player.getAttackPower(), player.getX(), player.getY()-18);
+
+        gc.setFill(Color.BLACK);
+        gc.setFont(new Font(12));
+        gc.fillText("Speed: " + player.getSpeed(), statusBarX + 40, statusBarY + 25);
+        gc.fillText("Strength: " + player.getAttackPower(), statusBarX + 40, statusBarY + 40);
+
+        Image asterix = new Image(getClass().getResourceAsStream("/asterix.png"));
+        gc.drawImage(asterix, statusBarX, statusBarY - 5, 30, 30);
 
     }
+
 }
 
 
