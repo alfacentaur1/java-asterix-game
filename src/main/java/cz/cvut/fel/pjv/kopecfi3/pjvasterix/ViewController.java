@@ -136,7 +136,7 @@ public class ViewController extends Application {
         scene.setOnKeyPressed(event -> {
             pressedKeys.add(event.getCode());
             handleMovement();
-            
+
         });
         scene.setOnMousePressed(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {
@@ -184,7 +184,7 @@ public class ViewController extends Application {
 
                 if (interactPanoramix()) {
                     if (panoramix.enoughResources(gc) )
-                     {
+                    {
 
                         KeyCode keyPressed = null;
                         for (KeyCode key : pressedKeys) {
@@ -329,20 +329,21 @@ public class ViewController extends Application {
 
     private void drawRomans(GraphicsContext gc) {
         for (RomanSoldier r : romanSoldiers) {
-            // Vykreslení vojáka
             gc.drawImage(r.getPlayerImage(), r.getX(), r.getY(), TILE_SIZE / 1.8, TILE_SIZE / 1.8);
 
             double healthBarWidth = 20;
             double healthBarHeight = 5;
-            double healthPercentage = (double) r.getHealth() / 3;
-            double currentHealthWidth = healthBarWidth * healthPercentage;
+            double healthPercentage = (double) r.getHealth()/3;
+            double currentHealthWidth = healthBarWidth * (healthPercentage);
 
 
             double healthBarX = r.getX()+8;
             double healthBarY = r.getY()-6;
 
             gc.setFill(Color.RED);
-            //rectangle
+            gc.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+
+            gc.setFill(Color.GREEN);
             gc.fillRect(healthBarX, healthBarY, currentHealthWidth, healthBarHeight);
 
         }
@@ -379,25 +380,30 @@ public class ViewController extends Application {
         return false;
 
     }
+
     private void drawStatusBar(GraphicsContext gc) {
-        double width = canvas.getWidth();
-        double height = canvas.getHeight();
-
-        double x = width - 150;
-        double y = height - 60;
-
-
-        gc.setFill(Color.LIGHTGRAY);
-        gc.fillRoundRect(x, y, 140, 50, 10, 10);
-        gc.setStroke(Color.BLACK);
-        gc.strokeRoundRect(x, y, 140, 50, 10, 10);
+        double healthBarWidth = 20;
+        double healthBarHeight = 5;
+        double healthPercentage = (double) player.getHealth() / 3;
+        double currentHealthWidth = healthBarWidth * (healthPercentage/3);
 
 
-        gc.setFill(Color.BLACK);
-        gc.setFont(Font.font("Arial", 12));
-        gc.fillText("Health: " + player.getHealth(), x + 10, y + 15);
-        gc.fillText("Speed: " + player.getSpeed(), x + 10, y + 30);
-        gc.fillText("Attack: " + player.getAttackPower(), x + 10, y + 45);
+        double healthBarX = player.getX()+4;
+        double healthBarY = player.getY()-6;
+
+        gc.setFill(Color.RED);
+        gc.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+
+        gc.setFill(Color.GREEN);
+        gc.fillRect(healthBarX, healthBarY, currentHealthWidth, healthBarHeight);
+
+        gc.setFill(Color.WHITE);
+        gc.setFont(new Font(8));
+        gc.fillText("Speed: " + player.getSpeed(), player.getX(), player.getY()-9);
+        gc.setFill(Color.WHITE);
+        gc.setFont(new Font(8));
+        gc.fillText("Strength: " + player.getAttackPower(), player.getX(), player.getY()-18);
+
     }
 
 

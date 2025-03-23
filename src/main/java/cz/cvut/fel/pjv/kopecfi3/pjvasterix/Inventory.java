@@ -33,7 +33,7 @@ public class Inventory {
         for (Item item : items) {
             if (Math.abs(item.getX() - x) < tile_size / 2
                     && Math.abs(item.getY() - y) < tile_size /2
-                   && Math.abs(item.getY() - (int) player.getY()) < tile_size / 3
+                    && Math.abs(item.getY() - (int) player.getY()) < tile_size / 3
                     && Math.abs(item.getX() - (int) player.getX()) < tile_size / 3)
 
             {
