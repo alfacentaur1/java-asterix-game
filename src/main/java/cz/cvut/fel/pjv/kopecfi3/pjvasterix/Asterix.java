@@ -79,7 +79,7 @@ public class Asterix extends Character {
     }
 
     //loop through romans, decrement is for not to go out of bounds
-    public void attack(Asterix player,ArrayList<RomanSoldier> romanSoldiers,int TILE_SIZE) {
+    public void attack(Asterix player,ArrayList<RomanSoldier> romanSoldiers,ArrayList<Centurion> centurions,int TILE_SIZE) {
         int decrement=0;
         for(int i=0;i<romanSoldiers.size();i++) {
             RomanSoldier r = romanSoldiers.get(i);
@@ -92,13 +92,24 @@ public class Asterix extends Character {
                 }
             }
         }
+        for(int i=0;i<centurions.size();i++) {
+            Centurion c = centurions.get(i);
+            if (Math.abs(centurions.get(i).getX() - player.getX()) < TILE_SIZE / 4 &&
+                    Math.abs(c.getY() - player.getY()) < TILE_SIZE / 4){;
+                c.decreaseHealth();
+                if(c.getHealth() <= 0) {
+                    centurions.remove(i-decrement);
+                    decrement++;
+                }
+            }
+        }
     }
 
     public void decreaseHealth() {
         health--;
     }
 
-    public void checkForAttacks(Asterix player, ArrayList<RomanSoldier> romanSoldiers, int TILE_SIZE) {
+    public void checkForAttacks(Asterix player, ArrayList<RomanSoldier> romanSoldiers, ArrayList<Centurion> centurions,int TILE_SIZE) {
         long currentTime = System.currentTimeMillis();
 
         //cooldown 1 sec
@@ -106,6 +117,18 @@ public class Asterix extends Character {
             for (RomanSoldier r : romanSoldiers) {
                 if (Math.abs(r.getX() - player.getX()) < TILE_SIZE / 4 &&
                         Math.abs(r.getY() - player.getY()) < TILE_SIZE / 4) {
+                    player.decreaseHealth();
+                    lastDamageTime = currentTime;
+
+                    if (player.getHealth() < 1) {
+                        System.exit(0) ;
+                    }
+                }
+            }
+            for (Centurion c : centurions) {
+                if (Math.abs(c.getX() - player.getX()) < TILE_SIZE / 4 &&
+                        Math.abs(c.getY() - player.getY()) < TILE_SIZE / 4) {
+                    player.decreaseHealth();
                     player.decreaseHealth();
                     lastDamageTime = currentTime;
 

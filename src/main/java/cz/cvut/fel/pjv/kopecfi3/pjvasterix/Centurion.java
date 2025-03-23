@@ -3,9 +3,9 @@ package cz.cvut.fel.pjv.kopecfi3.pjvasterix;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
+import java.util.Random;
 
-
-public class RomanSoldier extends Character {
+public class Centurion extends Character{
     private int start_x;
     private int end_x;
     private int start_y;
@@ -14,14 +14,13 @@ public class RomanSoldier extends Character {
     private String walk_direction; //y or x
     private double speed = 0.3;
 
-
-    public RomanSoldier(int x, int y ,int start_x, int end_x, int start_y, int end_y, String walk_direction) {
-        super(x, y,3);
+    public Centurion(int x, int y, int start_x, int end_x, int start_y, int end_y, String walk_direction) {
+        super(x, y, 5);
         this.start_x = start_x;
         this.end_x = end_x;
         this.start_y = start_y;
         this.end_y = end_y;
-        this.playerImage = new Image(getClass().getResourceAsStream("/roman.png.png"));
+        this.playerImage = new Image(getClass().getResourceAsStream("/centurion.png"));
         this.walk_direction = walk_direction;
     }
 
@@ -108,9 +107,10 @@ public class RomanSoldier extends Character {
     public void decreaseHealth(){
         this.health--;
     }
-    public static boolean checkForEnd(ArrayList<RomanSoldier> romanSoldiers) {
+
+    public static boolean checkForEnd(ArrayList<Centurion> centurions) {
         int counter = 0;
-        for(RomanSoldier romanSoldier : romanSoldiers) {
+        for(Centurion centurion : centurions) {
             counter++;
         }
         if(counter <1){

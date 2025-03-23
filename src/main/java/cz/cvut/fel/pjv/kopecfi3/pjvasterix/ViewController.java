@@ -41,6 +41,7 @@ public class ViewController extends Application {
     ArrayList<RomanSoldier> romanSoldiers = new ArrayList<RomanSoldier>();
     ArrayList<Item> items = new ArrayList<Item>();
     Inventory inventory = new Inventory();
+    ArrayList<Centurion> centurions = new ArrayList<Centurion>();
 
 
     // Tile map definition (0 = path, 1 = house, 2 = grass, 3 = water, 4 = bridge horizontal)
@@ -60,12 +61,13 @@ public class ViewController extends Application {
     };
     private final Asterix player = new Asterix(5, 5, 100);
     private final Villager villager1 = new Villager(20, 50, 10, 40, 30, 10, 120, "y");
-    private final RomanSoldier roman1 = new RomanSoldier(120, 170, 3, 100, 200, 120, 150, "x");
+    private final RomanSoldier roman1 = new RomanSoldier(120, 170,  100, 200, 120, 150, "x");
     private final Obelix obelix = new Obelix(40, 100, 10);
     private final Panoramix panoramix = new Panoramix(100, 100, 10);
     private final Carrot carrot = new Carrot(200, 100);
     private final Shroom shroom = new Shroom(500, 100);
     private final WaterBucket waterBucket = new WaterBucket(400, 100);
+    private final Centurion centurion = new Centurion(160, 170,  100, 200, 120, 150, "x");
 
     public ViewController() {
         villagers.add(villager1);
@@ -73,6 +75,7 @@ public class ViewController extends Application {
         items.add(carrot);
         items.add(shroom);
         items.add(waterBucket);
+        centurions.add(centurion);
     }
 
     public static void main(String[] args) {
@@ -128,6 +131,7 @@ public class ViewController extends Application {
         drawPlayer(gc);
         drawVillagers(gc);
         drawRomans(gc);
+        drawCenturions(gc);
         drawObelix(gc);
         drawStatusBar(gc);
 
@@ -140,7 +144,7 @@ public class ViewController extends Application {
         });
         scene.setOnMousePressed(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {
-                player.attack(player, romanSoldiers, TILE_SIZE);
+                player.attack(player, romanSoldiers,centurions, TILE_SIZE);
                 player.setPlayerImage(asterixattack);
                 Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), e -> {
                     player.setPlayerImage(asterix);
@@ -174,8 +178,11 @@ public class ViewController extends Application {
             public void handle(long now) {
                 GraphicsContext gc = canvas.getGraphicsContext2D();
                 redraw(gc);
-                player.checkForAttacks(player,romanSoldiers,TILE_SIZE );
-                RomanSoldier.checkForEnd(romanSoldiers);
+                player.checkForAttacks(player,romanSoldiers,centurions,TILE_SIZE );
+                if(RomanSoldier.checkForEnd(romanSoldiers) && Centurion.checkForEnd(centurions)){
+                    System.exit(0);
+                }
+
 
 
                 if (interactObelix()) {
@@ -279,6 +286,7 @@ public class ViewController extends Application {
     private void drawPlayer(GraphicsContext gc) {
         gc.drawImage(player.getPlayerImage(), player.getX(), player.getY(), TILE_SIZE/2.2, TILE_SIZE/2.2);
     }
+
     //redraw the map on every iteration of game loop
     private void redraw(GraphicsContext gc) {
         drawMap(gc);
@@ -288,13 +296,21 @@ public class ViewController extends Application {
 
 
         try {
-            villager1.move();
-            roman1.move();
+            for(Villager v:villagers){
+                v.move();
+            }
+            for(RomanSoldier r:romanSoldiers){
+                r.move();
+            }
+            for(Centurion c:centurions){
+                c.move();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         drawVillagers(gc);
         drawRomans(gc);
+        drawCenturions(gc);
         drawObelix(gc);
         drawPanoramix(gc);
 
@@ -334,6 +350,26 @@ public class ViewController extends Application {
             double healthBarWidth = 20;
             double healthBarHeight = 5;
             double healthPercentage = (double) r.getHealth()/3;
+            double currentHealthWidth = healthBarWidth * (healthPercentage);
+
+
+            double healthBarX = r.getX()+8;
+            double healthBarY = r.getY()-6;
+
+            gc.setFill(Color.RED);
+            gc.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
+
+            gc.setFill(Color.GREEN);
+            gc.fillRect(healthBarX, healthBarY, currentHealthWidth, healthBarHeight);
+
+        }
+    }    private void drawCenturions(GraphicsContext gc) {
+        for (Centurion r : centurions) {
+            gc.drawImage(r.getPlayerImage(), r.getX(), r.getY(), TILE_SIZE / 1.8, TILE_SIZE / 1.8);
+
+            double healthBarWidth = 20;
+            double healthBarHeight = 5;
+            double healthPercentage = (double) r.getHealth()/5;
             double currentHealthWidth = healthBarWidth * (healthPercentage);
 
 
@@ -405,10 +441,6 @@ public class ViewController extends Application {
         gc.fillText("Strength: " + player.getAttackPower(), player.getX(), player.getY()-18);
 
     }
-
-
-
-
 }
 
 
