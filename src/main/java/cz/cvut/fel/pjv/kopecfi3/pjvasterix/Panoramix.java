@@ -23,6 +23,9 @@ public class Panoramix extends Character {
     //strength potion - i
     //health potion - o
     //attack potion - p
+    //if asterix is near enough panoramix, he will check for resources in his inventory
+    //if he doesn't have enough resources, he will say "go away"
+    //else asterix can choose which potion he would like
     public boolean enoughResources( GraphicsContext gc) {
         double yPos = y - 40;
         ArrayList<Item> items = Inventory.getItems();
@@ -42,6 +45,7 @@ public class Panoramix extends Character {
                 shroomCounter++;
             }
         }
+        //check if player has enough resources
         if(shroomCounter < 2 || bucketCounter < 1 || carrotCounter < 2 ){
             gc.setFill(javafx.scene.paint.Color.WHITE);
             gc.fillRoundRect(x, yPos, 220, 60, 10, 10);
@@ -61,6 +65,7 @@ public class Panoramix extends Character {
 
     }
 
+    //returns string of potion which asterix has ordered
     public String craftPotion(KeyCode keyPressed,GraphicsContext gc) {
         double yPos = y - 40;
         gc.setFill(javafx.scene.paint.Color.WHITE);

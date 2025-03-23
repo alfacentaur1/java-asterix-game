@@ -108,6 +108,7 @@ public class Centurion extends Character{
         this.health--;
     }
 
+    //we check for the end of the game - if there are no centurions left - return true,else false
     public static boolean checkForEnd(ArrayList<Centurion> centurions) {
         int counter = 0;
         for(Centurion centurion : centurions) {

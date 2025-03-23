@@ -21,21 +21,19 @@ import java.util.*;
 
 
 public class ViewController extends Application {
+    //initialize
     private static final int TILE_SIZE = 64;  // Size of a single tile
     private static final int MAP_WIDTH = 15;  // Number of tiles in width
     private static final int MAP_HEIGHT = 10; // Number of tiles in height
     private static final int SCREEN_WIDTH = 8;  // Visible tiles horizontally
     private static final int SCREEN_HEIGHT = 8; // Visible tiles vertically
     private Image grass;
-    private Image wall_vertical;
     private Image asterixattack;
     private Image path;
-    private Image wall_horizontal;
     private Image house;
     private Canvas canvas;
     private final Set<KeyCode> pressedKeys = new HashSet<>();
     private Image water;
-    private Image bridgevertical;
     private Image bridgehorizontal;
     ArrayList<Villager> villagers = new ArrayList<Villager>();
     ArrayList<RomanSoldier> romanSoldiers = new ArrayList<RomanSoldier>();
@@ -59,6 +57,8 @@ public class ViewController extends Application {
             {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1}
 
     };
+
+    //add instances to map
     private final Asterix player = new Asterix(5, 5, 100);
     private final Villager villager1 = new Villager(20, 50, 10, 40, 30, 10, 120, "y");
     private final RomanSoldier roman1 = new RomanSoldier(120, 170,  100, 200, 120, 150, "x");
@@ -70,6 +70,7 @@ public class ViewController extends Application {
     private final Centurion centurion = new Centurion(160, 170,  100, 200, 120, 150, "x");
 
     public ViewController() {
+        //add instances do their lists
         villagers.add(villager1);
         romanSoldiers.add(roman1);
         items.add(carrot);
@@ -106,13 +107,10 @@ public class ViewController extends Application {
     @Override
     public void start(Stage stage) {
         grass = new Image(getClass().getResourceAsStream("/grass.png"));
-        wall_vertical = new Image(getClass().getResourceAsStream("/wall-vertical.png"));
-        wall_horizontal = new Image(getClass().getResourceAsStream("/wall-horizontal.png"));
         house = new Image(getClass().getResourceAsStream("/House_Blue.png"));
         path = new Image(getClass().getResourceAsStream("/path.png"));
         water = new Image(getClass().getResourceAsStream("/water.png"));
         bridgehorizontal = new Image(getClass().getResourceAsStream("/bridgehorizontal.png"));
-        bridgevertical = new Image(getClass().getResourceAsStream("/bridgevertical.png"));
         asterixattack = new Image(getClass().getResourceAsStream("/asterixattack.png"));
         Image asterix = new Image(getClass().getResourceAsStream("/asterix.png"));
 
@@ -137,11 +135,14 @@ public class ViewController extends Application {
 
 
         //add keys pressed to the map - get code of the key and call the function
+        //on key presses handle players movement
         scene.setOnKeyPressed(event -> {
             pressedKeys.add(event.getCode());
             handleMovement();
 
         });
+        //listen to mouse buttons - attack/collect
+        //also on attack change asterix's picture and leave the duration on 0.5 s
         scene.setOnMousePressed(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {
                 player.attack(player, romanSoldiers,centurions, TILE_SIZE);
@@ -158,6 +159,8 @@ public class ViewController extends Application {
                 System.out.println(mouseX);
                 System.out.println(mouseY);
 
+                //check if player can collect the item
+                //check if inventory is not full and add item
                 Item itemToAdd = inventory.searchItems(items,mouseX,mouseY,TILE_SIZE,player);
                 if(itemToAdd != null){
                     if(inventory.getSize()<6 || inventory == null){
@@ -171,24 +174,28 @@ public class ViewController extends Application {
 
             }});
         //on release delete by code in hashmap
+        //asterix can walk all directions not only left,right,up, down
         scene.setOnKeyReleased(event -> pressedKeys.remove(event.getCode()));
 
+        //main loop
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 GraphicsContext gc = canvas.getGraphicsContext2D();
                 redraw(gc);
+
+                //if some soldier or centurion is near asterix, decrease health
                 player.checkForAttacks(player,romanSoldiers,centurions,TILE_SIZE );
                 if(RomanSoldier.checkForEnd(romanSoldiers) && Centurion.checkForEnd(centurions)){
                     System.exit(0);
                 }
 
-
-
+                //if asterix is near obelix, interact
                 if (interactObelix()) {
                     obelix.talk(gc);
                 }
 
+                //if asterix is near panoramix, interact
                 if (interactPanoramix()) {
                     if (panoramix.enoughResources(gc) )
                     {
@@ -210,7 +217,7 @@ public class ViewController extends Application {
                             }
 
                         }
-
+                        //clear inventory and give asterix the wanted powerup
                         if (keyPressed != null) {
                             String upgrade = panoramix.craftPotion(keyPressed, gc);
                             switch (upgrade) {
@@ -260,6 +267,7 @@ public class ViewController extends Application {
     /**
      * Draws the tile map on the canvas.
      */
+    //goes through the tilemap definition and loops, based on number input draws desired tile
     private void drawMap(GraphicsContext gc) {
         for (int y = 0; y < MAP_HEIGHT; y++) {
             for (int x = 0; x < MAP_WIDTH; x++) {
@@ -316,6 +324,7 @@ public class ViewController extends Application {
 
     }
 
+    //move asterix's coord based on key and speed - based on hashmap
     private void handleMovement() {
         int dx = 0;
         int dy = 0;
@@ -342,20 +351,22 @@ public class ViewController extends Application {
             gc.drawImage(v.getPlayerImage(), v.getX(), v.getY(), TILE_SIZE / 2.2, TILE_SIZE / 2.2);
         }
     }
-
+//draw romans healthbar
     private void drawRomans(GraphicsContext gc) {
         for (RomanSoldier r : romanSoldiers) {
             gc.drawImage(r.getPlayerImage(), r.getX(), r.getY(), TILE_SIZE / 1.8, TILE_SIZE / 1.8);
 
+            //specify the rect
             double healthBarWidth = 20;
             double healthBarHeight = 5;
             double healthPercentage = (double) r.getHealth()/3;
             double currentHealthWidth = healthBarWidth * (healthPercentage);
 
-
+            //coords
             double healthBarX = r.getX()+8;
             double healthBarY = r.getY()-6;
 
+            //fill the rect based on curr health, health percentage
             gc.setFill(Color.RED);
             gc.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
 
@@ -416,7 +427,7 @@ public class ViewController extends Application {
         return false;
 
     }
-
+    //same health bar as in roman, get the left down corner coords
     private void drawStatusBar(GraphicsContext gc) {
         double statusBarX = canvas.getWidth()-200;
         double statusBarY = canvas.getHeight() - 60;
@@ -437,7 +448,7 @@ public class ViewController extends Application {
         gc.setFill(Color.GREEN);
         gc.fillRect(statusBarX + 40, statusBarY, currentHealthWidth, healthBarHeight);
 
-
+        //get asterix's stats and show  them
         gc.setFill(Color.BLACK);
         gc.setFont(new Font(12));
         gc.fillText("Speed: " + player.getSpeed(), statusBarX + 40, statusBarY + 25);

@@ -22,6 +22,7 @@ public class Obelix extends Character {
         return image;
     }
 
+    //function to interact with asterix,when asterix comes close to obelix
     public void talk(GraphicsContext gc) {
         double yPos = y - 40;
 

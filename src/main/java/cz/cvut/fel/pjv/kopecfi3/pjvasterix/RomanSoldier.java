@@ -108,6 +108,7 @@ public class RomanSoldier extends Character {
     public void decreaseHealth(){
         this.health--;
     }
+    //we check for the end of the game - if there are no romans left - return true,else false
     public static boolean checkForEnd(ArrayList<RomanSoldier> romanSoldiers) {
         int counter = 0;
         for(RomanSoldier romanSoldier : romanSoldiers) {

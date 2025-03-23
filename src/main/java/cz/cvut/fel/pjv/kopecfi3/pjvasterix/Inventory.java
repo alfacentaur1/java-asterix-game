@@ -29,6 +29,7 @@ public class Inventory {
         }
     }
 
+    //if mouseX and mouseY coord are near the item image AND player is near it too, we will add the item to inventory
     public Item searchItems(ArrayList<Item> items, double x, double y, int tile_size, Asterix player) {
         for (Item item : items) {
             if (Math.abs(item.getX() - x) < tile_size / 2

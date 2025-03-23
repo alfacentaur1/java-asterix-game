@@ -55,7 +55,9 @@ public class Asterix extends Character {
     public void setAttackPower(int attackPower) {
         this.attackPower = attackPower;
     }
-
+    //main function for moving asterix
+    //we calculate new location based on speed input
+    //then we check if asterix's new location won't be out of bounds or water or rock
     public void move(int dx, int dy, int[][] tileMap) {
         int new_x = (int) x + dx;
         int new_y = (int) y + dy;
@@ -66,7 +68,10 @@ public class Asterix extends Character {
             }
         }
     }
-
+    //function to get the tiles
+    //we calculate x index from x coord + picture offset divided by tile
+    //same y index to tilemap array
+    //the tile index is not in bounds, we return 0
     public int getCurrentTile(int[][] tileMap, int x, int y) {
         int tileX = (x + 19) / tile_size;
         int tileY = (y + 23) / tile_size;
@@ -79,6 +84,8 @@ public class Asterix extends Character {
     }
 
     //loop through romans, decrement is for not to go out of bounds
+    //if event on right mouse click happens and some romans/centurions are near, we will decrease their health
+    //if their health is 0, we remove them from the arraylist of roman soldiers/centurions
     public void attack(Asterix player,ArrayList<RomanSoldier> romanSoldiers,ArrayList<Centurion> centurions,int TILE_SIZE) {
         int decrement=0;
         for(int i=0;i<romanSoldiers.size();i++) {
@@ -109,6 +116,10 @@ public class Asterix extends Character {
         health--;
     }
 
+    //we loop through romans and centurions, if some of them is near and 2 sec cooldown is not up, we decrease asterix's health
+    //roman - decrease once
+    //centurion - decrease twice
+    //if player is dead, end game
     public void checkForAttacks(Asterix player, ArrayList<RomanSoldier> romanSoldiers, ArrayList<Centurion> centurions,int TILE_SIZE) {
         long currentTime = System.currentTimeMillis();
 
