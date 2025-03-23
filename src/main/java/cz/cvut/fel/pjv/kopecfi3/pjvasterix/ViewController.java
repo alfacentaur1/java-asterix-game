@@ -145,7 +145,7 @@ public class ViewController extends Application {
         //also on attack change asterix's picture and leave the duration on 0.5 s
         scene.setOnMousePressed(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {
-                player.attack(player, romanSoldiers,centurions, TILE_SIZE);
+                items = player.attack(player, romanSoldiers,centurions, TILE_SIZE,items);
                 player.setPlayerImage(asterixattack);
                 Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), e -> {
                     player.setPlayerImage(asterix);
@@ -164,6 +164,9 @@ public class ViewController extends Application {
                 Item itemToAdd = inventory.searchItems(items,mouseX,mouseY,TILE_SIZE,player);
                 if(itemToAdd != null){
                     if(inventory.getSize()<6 || inventory == null){
+                        if(itemToAdd instanceof Potion){
+                            player.setAttackPower(player.getAttackPower()*2);
+                        }
                         inventory.addItem(itemToAdd);
                         System.out.println("listing....");
                         inventory.listInventory();
@@ -257,6 +260,7 @@ public class ViewController extends Application {
             }
 
         };
+        drawItems(gc);
 
         gameLoop.start();
         stage.show();
@@ -407,7 +411,6 @@ public class ViewController extends Application {
     private void drawItems(GraphicsContext gc) {
         for (Item item : items) {
             gc.drawImage(item.getImage(), item.getX(), item.getY(), TILE_SIZE / 1.2, TILE_SIZE / 1.2);
-
         }
     }
     // If obelix position is closer than one tile, start the conversation

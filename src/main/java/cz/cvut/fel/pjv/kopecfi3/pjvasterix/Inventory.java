@@ -38,6 +38,9 @@ public class Inventory {
                     && Math.abs(item.getX() - (int) player.getX()) < tile_size / 3)
 
             {
+                if (item instanceof Potion) {
+                    items.remove(item);
+                }
                 System.out.println("returning item");
                 return item;
             }

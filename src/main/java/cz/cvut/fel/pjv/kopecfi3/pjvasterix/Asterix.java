@@ -5,6 +5,8 @@ import javafx.scene.image.Image;
 import java.util.ArrayList;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Iterator;
+import java.util.Random;
 
 
 public class Asterix extends Character {
@@ -86,30 +88,47 @@ public class Asterix extends Character {
     //loop through romans, decrement is for not to go out of bounds
     //if event on right mouse click happens and some romans/centurions are near, we will decrease their health
     //if their health is 0, we remove them from the arraylist of roman soldiers/centurions
-    public void attack(Asterix player,ArrayList<RomanSoldier> romanSoldiers,ArrayList<Centurion> centurions,int TILE_SIZE) {
-        int decrement=0;
-        for(int i=0;i<romanSoldiers.size();i++) {
-            RomanSoldier r = romanSoldiers.get(i);
-            if (Math.abs(romanSoldiers.get(i).getX() - player.getX()) < TILE_SIZE / 4 &&
-                    Math.abs(r.getY() - player.getY()) < TILE_SIZE / 4){
+    //if centurion is dead, it has 1/3 chance to drop the potion
+    public ArrayList<Item> attack(Asterix player, ArrayList<RomanSoldier> romanSoldiers, ArrayList<Centurion> centurions, int TILE_SIZE, ArrayList<Item> items) {
+        ArrayList<Item> newItems = new ArrayList<>(items);
+        Random random = new Random();
+
+        Iterator<RomanSoldier> romanIterator = romanSoldiers.iterator();
+        while (romanIterator.hasNext()) {
+            RomanSoldier r = romanIterator.next();
+            if (Math.abs(r.getX() - player.getX()) < TILE_SIZE / 4 &&
+                    Math.abs(r.getY() - player.getY()) < TILE_SIZE / 4) {
+                for(int i = 0;i < this.getAttackPower();i++){
+                    r.decreaseHealth();
+                }
                 r.decreaseHealth();
-                if(r.getHealth() <= 0) {
-                    romanSoldiers.remove(i-decrement);
-                    decrement++;
+                if (r.getHealth() <= 0) {
+                    romanIterator.remove();
                 }
             }
         }
-        for(int i=0;i<centurions.size();i++) {
-            Centurion c = centurions.get(i);
-            if (Math.abs(centurions.get(i).getX() - player.getX()) < TILE_SIZE / 4 &&
-                    Math.abs(c.getY() - player.getY()) < TILE_SIZE / 4){;
-                c.decreaseHealth();
-                if(c.getHealth() <= 0) {
-                    centurions.remove(i-decrement);
-                    decrement++;
+
+        Iterator<Centurion> centurionIterator = centurions.iterator();
+        while (centurionIterator.hasNext()) {
+            Centurion c = centurionIterator.next();
+            if (Math.abs(c.getX() - player.getX()) < TILE_SIZE / 4 &&
+                    Math.abs(c.getY() - player.getY()) < TILE_SIZE / 4) {
+                for(int i = 0;i < this.getAttackPower();i++){
+                    c.decreaseHealth();
+                }
+                if (c.getHealth() <= 0) {
+                    double x = c.getX();
+                    double y = c.getY();
+                    centurionIterator.remove();
+
+                    if (random.nextInt(2) == 0) {
+                        Potion potion = new Potion(c.getX(), c.getY());
+                        newItems.add(potion);
+                    }
                 }
             }
         }
+        return newItems;
     }
 
     public void decreaseHealth() {
