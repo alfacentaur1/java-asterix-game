@@ -72,8 +72,8 @@ public class Asterix extends Character {
     //same y index to tilemap array
     //the tile index is not in bounds, we return 0
     public int getCurrentTile(int[][] tileMap, int x, int y) {
-        int tileX = (x + 20) / tile_size;
-        int tileY = (y + 25) / tile_size;
+        int tileX = (x + 13) / tile_size;
+        int tileY = (y + 30) / tile_size;
 
         if (tileX >= 0 && tileX < tileMap[0].length && tileY >= 0 && tileY < tileMap.length) {
             return tileMap[tileY][tileX];
