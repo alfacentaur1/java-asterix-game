@@ -89,16 +89,11 @@ public class ViewController extends Application {
             }
 
         }
-        //if it will be right in menu, load inv
+        //if menu option would be load - load saved inventory
         if(true) {
             player.loadInventory(inventory);
         }
     }
-
-
-    //if menu option would be load - load saved inventory
-
-
 
     public static void main(String[] args) {
         launch(args);
@@ -132,7 +127,7 @@ public class ViewController extends Application {
         path = new Image(getClass().getResourceAsStream("/path.png"));
         water = new Image(getClass().getResourceAsStream("/water.png"));
         bridgehorizontal = new Image(getClass().getResourceAsStream("/bridgehorizontal.png"));
-        asterixattack = new Image(getClass().getResourceAsStream("/asterixattack.png"));
+        asterixattack = new Image(getClass().getResourceAsStream("/asterixattack.png.png"));
         Image asterix = new Image(getClass().getResourceAsStream("/asterix.png"));
 
 
@@ -165,23 +160,32 @@ public class ViewController extends Application {
             }
 
         });
+        Timeline manaRegeneration = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            if (player.getMana() < 5) {
+                player.increaseMana(player);
+            }
+        }));
+        manaRegeneration.setCycleCount(Timeline.INDEFINITE);
+        manaRegeneration.play();
         //listen to mouse buttons - attack/collect
         //also on attack change asterix's picture and leave the duration on 0.5 s
         scene.setOnMousePressed(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {
-                items = player.attack(player, romanSoldiers, centurions, TILE_SIZE, items);
-                player.setPlayerImage(asterixattack);
-                Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), e -> {
-                    player.setPlayerImage(asterix);
-                }));
-                timeline.setCycleCount(1); //only once
-                timeline.play();
+                if (player.getMana() > 0) {
+                    items = player.attack(player, romanSoldiers, centurions, TILE_SIZE, items);
+                    player.setPlayerImage(asterixattack);
+                    player.decreaseMana(player);
+                    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), e -> {
+                        player.setPlayerImage(asterix);
+                    }));
+                    timeline.setCycleCount(1); //only once
+                    timeline.play();
+                }
+
             }
             if (event.getButton() == MouseButton.PRIMARY) {
                 double mouseX = event.getX();
                 double mouseY = event.getY();
-                System.out.println(mouseX);
-                System.out.println(mouseY);
 
                 //check if player can collect the item
                 //check if inventory is not full and add item
@@ -287,6 +291,7 @@ public class ViewController extends Application {
         stage.show();
         root.requestFocus();
     }
+
 
 
     /**
@@ -459,34 +464,48 @@ public class ViewController extends Application {
     //same health bar as in roman, get the left down corner coords
     private void drawStatusBar(GraphicsContext gc) {
         double statusBarX = canvas.getWidth() - 200;
-        double statusBarY = canvas.getHeight() - 60;
+        double statusBarY = canvas.getHeight() - 90;
 
-        double healthBarWidth = 100;
+        double healthBarWidth = 130;
         double healthBarHeight = 10;
         double healthPercentage = (double) player.getHealth() * 10 / 100;
         double currentHealthWidth = healthBarWidth * healthPercentage;
 
-
         gc.setFill(Color.DARKGRAY);
-        gc.fillRect(statusBarX, statusBarY - 10, 180, 60);
+        gc.fillRect(statusBarX, statusBarY - 10, 180, 90);
 
-
+        // health
         gc.setFill(Color.RED);
         gc.fillRect(statusBarX + 40, statusBarY, healthBarWidth, healthBarHeight);
-
         gc.setFill(Color.GREEN);
         gc.fillRect(statusBarX + 40, statusBarY, currentHealthWidth, healthBarHeight);
 
-        //get asterix's stats and show  them
+        // speed, strenght
         gc.setFill(Color.BLACK);
         gc.setFont(new Font(12));
         gc.fillText("Speed: " + player.getSpeed(), statusBarX + 40, statusBarY + 25);
         gc.fillText("Strength: " + player.getAttackPower(), statusBarX + 40, statusBarY + 40);
 
+        // asterix image
         Image asterix = new Image(getClass().getResourceAsStream("/asterix.png"));
-        gc.drawImage(asterix, statusBarX, statusBarY - 5, 30, 30);
+        gc.drawImage(asterix, statusBarX-5, statusBarY +10, 50, 50);
 
+        // Mana
+        gc.setFill(Color.BLACK);
+        gc.setFont(new Font(12));
+        gc.fillText("Mana", statusBarX + 40, statusBarY + 54);
+        int mana = player.getMana();
+        int manaSize = 10; //px of one brick
+        double manaStartX = statusBarX + 40; //start y axis
+        double manaStartY = statusBarY +60; //start x axis
+
+
+        gc.setFill(Color.DARKBLUE);
+        for (int i = 0; i < mana; i++) {
+            gc.fillRect(manaStartX + (i * (manaSize + 2)), manaStartY, manaSize, manaSize);
+        }
     }
+
 
 }
 

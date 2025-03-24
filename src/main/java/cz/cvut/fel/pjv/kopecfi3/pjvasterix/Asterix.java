@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Random;
 
 
@@ -21,7 +20,7 @@ public class Asterix extends Character {
     private int speed = 10;
     private long lastDamageTime = 0;
     private int manaCapacity = 5;
-    private int mana = 0;
+    private int mana = 5;
 
     public int getAttackPower() {
         return attackPower;
@@ -29,6 +28,9 @@ public class Asterix extends Character {
 
     public int getSpeed() {
         return speed;
+    }
+    public int getMana(){
+        return mana;
     }
 
     public void setSpeed(int speed) {
@@ -70,8 +72,8 @@ public class Asterix extends Character {
     //same y index to tilemap array
     //the tile index is not in bounds, we return 0
     public int getCurrentTile(int[][] tileMap, int x, int y) {
-        int tileX = (x + 19) / tile_size;
-        int tileY = (y + 26) / tile_size;
+        int tileX = (x + 20) / tile_size;
+        int tileY = (y + 25) / tile_size;
 
         if (tileX >= 0 && tileX < tileMap[0].length && tileY >= 0 && tileY < tileMap.length) {
             return tileMap[tileY][tileX];
@@ -81,13 +83,13 @@ public class Asterix extends Character {
     }
 
     //loop through romans, decrement is for not to go out of bounds
+    //attack only if asterix's mana is > 0
     //if event on right mouse click happens and some romans/centurions are near, we will decrease their health
     //if their health is 0, we remove them from the arraylist of roman soldiers/centurions
     //if centurion is dead, it has 1/3 chance to drop the potion
     public ArrayList<Item> attack(Asterix player, ArrayList<RomanSoldier> romanSoldiers, ArrayList<Centurion> centurions, int TILE_SIZE, ArrayList<Item> items) {
         ArrayList<Item> newItems = new ArrayList<>(items);
         Random random = new Random();
-
         Iterator<RomanSoldier> romanIterator = romanSoldiers.iterator();
         while (romanIterator.hasNext()) {
             RomanSoldier r = romanIterator.next();
@@ -212,7 +214,20 @@ public class Asterix extends Character {
         } catch (IOException e) {
             System.err.println("Error while loading inventory: " + e.getMessage());
         }
-    }}
+
+    }
+    public void increaseMana(Asterix player){
+        if(mana < manaCapacity){
+            this.mana++;
+        }
+    }
+    public void decreaseMana(Asterix player){
+        if(player.getMana() > 0){
+            player.mana--;
+        }
+    }
+}
+
 
 
 
