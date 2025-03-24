@@ -40,43 +40,55 @@ public class ViewController extends Application {
     ArrayList<Item> items = new ArrayList<Item>();
     Inventory inventory = new Inventory();
     ArrayList<Centurion> centurions = new ArrayList<Centurion>();
+    private Asterix player = null;
+    private Obelix obelix = null;
+    private Panoramix panoramix = null;
 
 
     // Tile map definition (0 = path, 1 = house, 2 = grass, 3 = water, 4 = bridge horizontal)
-    private int[][] tileMap = {
-            {2, 2, 2, 2, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 2, 2, 2, 1},
-            {2, 0, 1, 1, 1, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0},
-            {2, 0, 1, 0, 0, 1, 0, 2, 0, 3, 0, 0, 3, 0, 3},
-            {2, 0, 1, 1, 1, 1, 0, 2, 0, 3, 0, 0, 3, 0, 3},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 3, 3, 3, 3},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 3, 4, 3, 3},
-            {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1},
-            {2, 0, 0, 0, 0, 2, 1, 1, 2, 2, 0, 0, 2, 2, 1}
-
-    };
+    FileLoader fileLoader = new FileLoader();
+    private int[][] tileMap = fileLoader.loadMap("src/main/resources/map1.txt");
+    EntityLoader entityLoader = new EntityLoader();
+    private ArrayList<Object> allInstances = entityLoader.loadAllMapEntities("src/main/resources/entitiesmap1.txt");
 
     //add instances to map
-    private final Asterix player = new Asterix(5, 5, 100);
-    private final Villager villager1 = new Villager(20, 50, 10, 40, 30, 10, 120, "y");
-    private final RomanSoldier roman1 = new RomanSoldier(120, 170,  100, 200, 120, 150, "x");
-    private final Obelix obelix = new Obelix(40, 100, 10);
-    private final Panoramix panoramix = new Panoramix(100, 100, 10);
-    private final Carrot carrot = new Carrot(200, 100);
-    private final Shroom shroom = new Shroom(500, 100);
-    private final WaterBucket waterBucket = new WaterBucket(400, 100);
-    private final Centurion centurion = new Centurion(160, 170,  100, 200, 120, 150, "x");
+//    private final Asterix player = new Asterix(5, 5, 100);
+//    private final Villager villager1 = new Villager(20, 50, 10, 40, 30, 10, 120, "y");
+//    private final RomanSoldier roman1 = new RomanSoldier(120, 170, 100, 200, 120, 150, "x");
+//    private final Obelix obelix = new Obelix(40, 100, 10);
+//    private final Panoramix panoramix = new Panoramix(100, 100, 10);
+//    private final Carrot carrot = new Carrot(200, 100);
+//    private final Shroom shroom = new Shroom(500, 100);
+//    private final WaterBucket waterBucket = new WaterBucket(400, 100);
+//    private final Centurion centurion = new Centurion(160, 170, 100, 200, 120, 150, "x");
+
 
     public ViewController() {
         //add instances do their lists
-        villagers.add(villager1);
-        romanSoldiers.add(roman1);
-        items.add(carrot);
-        items.add(shroom);
-        items.add(waterBucket);
-        centurions.add(centurion);
+        for(Object o : allInstances) {
+            if(o instanceof Villager) {
+                villagers.add((Villager)o);
+            }
+            if(o instanceof RomanSoldier) {
+                romanSoldiers.add((RomanSoldier)o);
+            }
+            if(o instanceof Item) {
+                items.add((Item)o);
+            }
+            if(o instanceof Centurion) {
+                centurions.add((Centurion)o);
+            }
+            if(o instanceof Asterix) {
+                player = (Asterix)o;
+            }
+            if(o instanceof Obelix) {
+                obelix = (Obelix)o;
+            }
+            if(o instanceof Panoramix) {
+                panoramix = (Panoramix)o;
+            }
+
+        }
     }
 
     public static void main(String[] args) {
@@ -145,7 +157,7 @@ public class ViewController extends Application {
         //also on attack change asterix's picture and leave the duration on 0.5 s
         scene.setOnMousePressed(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {
-                items = player.attack(player, romanSoldiers,centurions, TILE_SIZE,items);
+                items = player.attack(player, romanSoldiers, centurions, TILE_SIZE, items);
                 player.setPlayerImage(asterixattack);
                 Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), e -> {
                     player.setPlayerImage(asterix);
@@ -161,11 +173,11 @@ public class ViewController extends Application {
 
                 //check if player can collect the item
                 //check if inventory is not full and add item
-                Item itemToAdd = inventory.searchItems(items,mouseX,mouseY,TILE_SIZE,player);
-                if(itemToAdd != null){
-                    if(inventory.getSize()<6 || inventory == null){
-                        if(itemToAdd instanceof Potion){
-                            player.setAttackPower(player.getAttackPower()*2);
+                Item itemToAdd = inventory.searchItems(items, mouseX, mouseY, TILE_SIZE, player);
+                if (itemToAdd != null) {
+                    if (inventory.getSize() < 6 || inventory == null) {
+                        if (itemToAdd instanceof Potion) {
+                            player.setAttackPower(player.getAttackPower() * 2);
                         }
                         inventory.addItem(itemToAdd);
                         System.out.println("listing....");
@@ -174,8 +186,8 @@ public class ViewController extends Application {
                 }
 
 
-
-            }});
+            }
+        });
         //on release delete by code in hashmap
         //asterix can walk all directions not only left,right,up, down
         scene.setOnKeyReleased(event -> pressedKeys.remove(event.getCode()));
@@ -188,8 +200,8 @@ public class ViewController extends Application {
                 redraw(gc);
 
                 //if some soldier or centurion is near asterix, decrease health
-                player.checkForAttacks(player,romanSoldiers,centurions,TILE_SIZE );
-                if(RomanSoldier.checkForEnd(romanSoldiers) && Centurion.checkForEnd(centurions)){
+                player.checkForAttacks(player, romanSoldiers, centurions, TILE_SIZE);
+                if (RomanSoldier.checkForEnd(romanSoldiers) && Centurion.checkForEnd(centurions)) {
                     System.exit(0);
                 }
 
@@ -200,8 +212,7 @@ public class ViewController extends Application {
 
                 //if asterix is near panoramix, interact
                 if (interactPanoramix()) {
-                    if (panoramix.enoughResources(gc) )
-                    {
+                    if (panoramix.enoughResources(gc)) {
 
                         KeyCode keyPressed = null;
                         for (KeyCode key : pressedKeys) {
@@ -209,12 +220,10 @@ public class ViewController extends Application {
                                 keyPressed = KeyCode.I;
 
                                 break;
-                            }
-                            else if (key == KeyCode.O) {
+                            } else if (key == KeyCode.O) {
                                 keyPressed = KeyCode.O;
                                 break;
-                            }
-                            else if (key == KeyCode.P) {
+                            } else if (key == KeyCode.P) {
                                 keyPressed = KeyCode.P;
                                 break;
                             }
@@ -227,7 +236,7 @@ public class ViewController extends Application {
                                 case "speed":
                                     inventory = new Inventory();
                                     System.out.println("Potion: Speed crafted!");
-                                    player.setSpeed(player.getSpeed()*2);
+                                    player.setSpeed(player.getSpeed() * 2);
                                     break;
                                 case "health":
                                     inventory = new Inventory();
@@ -294,9 +303,8 @@ public class ViewController extends Application {
     }
 
 
-
     private void drawPlayer(GraphicsContext gc) {
-        gc.drawImage(player.getPlayerImage(), player.getX(), player.getY(), TILE_SIZE/2.2, TILE_SIZE/2.2);
+        gc.drawImage(player.getPlayerImage(), player.getX(), player.getY(), TILE_SIZE / 2.2, TILE_SIZE / 2.2);
     }
 
     //redraw the map on every iteration of game loop
@@ -308,13 +316,13 @@ public class ViewController extends Application {
 
 
         try {
-            for(Villager v:villagers){
+            for (Villager v : villagers) {
                 v.move();
             }
-            for(RomanSoldier r:romanSoldiers){
+            for (RomanSoldier r : romanSoldiers) {
                 r.move();
             }
-            for(Centurion c:centurions){
+            for (Centurion c : centurions) {
                 c.move();
             }
         } catch (Exception e) {
@@ -333,16 +341,16 @@ public class ViewController extends Application {
         int dx = 0;
         int dy = 0;
         if (pressedKeys.contains(KeyCode.W)) {
-            dy = -1* player.getSpeed();
+            dy = -1 * player.getSpeed();
         }
         if (pressedKeys.contains(KeyCode.S)) {
-            dy = 1* player.getSpeed();
+            dy = 1 * player.getSpeed();
         }
         if (pressedKeys.contains(KeyCode.A)) {
-            dx = -1* player.getSpeed();
+            dx = -1 * player.getSpeed();
         }
         if (pressedKeys.contains(KeyCode.D)) {
-            dx = 1* player.getSpeed();
+            dx = 1 * player.getSpeed();
         }
 
         player.move(dx, dy, tileMap);
@@ -355,7 +363,8 @@ public class ViewController extends Application {
             gc.drawImage(v.getPlayerImage(), v.getX(), v.getY(), TILE_SIZE / 2.2, TILE_SIZE / 2.2);
         }
     }
-//draw romans healthbar
+
+    //draw romans healthbar
     private void drawRomans(GraphicsContext gc) {
         for (RomanSoldier r : romanSoldiers) {
             gc.drawImage(r.getPlayerImage(), r.getX(), r.getY(), TILE_SIZE / 1.8, TILE_SIZE / 1.8);
@@ -363,12 +372,12 @@ public class ViewController extends Application {
             //specify the rect
             double healthBarWidth = 20;
             double healthBarHeight = 5;
-            double healthPercentage = (double) r.getHealth()/3;
+            double healthPercentage = (double) r.getHealth() / 3;
             double currentHealthWidth = healthBarWidth * (healthPercentage);
 
             //coords
-            double healthBarX = r.getX()+8;
-            double healthBarY = r.getY()-6;
+            double healthBarX = r.getX() + 8;
+            double healthBarY = r.getY() - 6;
 
             //fill the rect based on curr health, health percentage
             gc.setFill(Color.RED);
@@ -378,18 +387,20 @@ public class ViewController extends Application {
             gc.fillRect(healthBarX, healthBarY, currentHealthWidth, healthBarHeight);
 
         }
-    }    private void drawCenturions(GraphicsContext gc) {
+    }
+
+    private void drawCenturions(GraphicsContext gc) {
         for (Centurion r : centurions) {
             gc.drawImage(r.getPlayerImage(), r.getX(), r.getY(), TILE_SIZE / 1.8, TILE_SIZE / 1.8);
 
             double healthBarWidth = 20;
             double healthBarHeight = 5;
-            double healthPercentage = (double) r.getHealth()/5;
+            double healthPercentage = (double) r.getHealth() / 5;
             double currentHealthWidth = healthBarWidth * (healthPercentage);
 
 
-            double healthBarX = r.getX()+8;
-            double healthBarY = r.getY()-6;
+            double healthBarX = r.getX() + 8;
+            double healthBarY = r.getY() - 6;
 
             gc.setFill(Color.RED);
             gc.fillRect(healthBarX, healthBarY, healthBarWidth, healthBarHeight);
@@ -413,31 +424,34 @@ public class ViewController extends Application {
             gc.drawImage(item.getImage(), item.getX(), item.getY(), TILE_SIZE / 1.2, TILE_SIZE / 1.2);
         }
     }
+
     // If obelix position is closer than one tile, start the conversation
     private boolean interactObelix() {
-        if (Math.abs(player.getX() - obelix.getX()) < TILE_SIZE/3.5 &&
-                Math.abs(player.getY() - obelix.getY()) < TILE_SIZE/3.5) {
+        if (Math.abs(player.getX() - obelix.getX()) < TILE_SIZE / 3.5 &&
+                Math.abs(player.getY() - obelix.getY()) < TILE_SIZE / 3.5) {
             return true;
         }
         return false;
 
     }
+
     private boolean interactPanoramix() {
-        if (Math.abs(player.getX() - panoramix.getX()) < TILE_SIZE/3.5 &&
-                Math.abs(player.getY() - panoramix.getY()) < TILE_SIZE/3.5) {
+        if (Math.abs(player.getX() - panoramix.getX()) < TILE_SIZE / 3.5 &&
+                Math.abs(player.getY() - panoramix.getY()) < TILE_SIZE / 3.5) {
             return true;
         }
         return false;
 
     }
+
     //same health bar as in roman, get the left down corner coords
     private void drawStatusBar(GraphicsContext gc) {
-        double statusBarX = canvas.getWidth()-200;
+        double statusBarX = canvas.getWidth() - 200;
         double statusBarY = canvas.getHeight() - 60;
 
         double healthBarWidth = 100;
         double healthBarHeight = 10;
-        double healthPercentage = (double) player.getHealth()*10 / 100;
+        double healthPercentage = (double) player.getHealth() * 10 / 100;
         double currentHealthWidth = healthBarWidth * healthPercentage;
 
 

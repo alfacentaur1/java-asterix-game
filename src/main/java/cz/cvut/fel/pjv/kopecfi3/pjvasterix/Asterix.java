@@ -3,21 +3,20 @@ package cz.cvut.fel.pjv.kopecfi3.pjvasterix;
 import javafx.scene.image.Image;
 
 import java.util.ArrayList;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.Random;
 
 
 public class Asterix extends Character {
     private int attackPower = 1;
-    private double prevX, prevY;
     private final int tile_size = ViewController.getTILE_SIZE();
     private final int map_width = ViewController.getMapWidth();
     private final int map_height = ViewController.getMapHeight();
     private Image playerImage;
     private int speed = 10;
     private long lastDamageTime = 0;
+    private int manaCapacity = 5;
+    private int mana = 0;
 
     public int getAttackPower() {
         return attackPower;
@@ -35,13 +34,6 @@ public class Asterix extends Character {
         return playerImage;
     }
 
-    public double getPrevX() {
-        return prevX;
-    }
-
-    public double getPrevY() {
-        return prevY;
-    }
 
     public void setPlayerImage(Image playerImage) {
         this.playerImage = playerImage;
@@ -50,8 +42,6 @@ public class Asterix extends Character {
     public Asterix(double x, double y, int health) {
         super(10, 10, 10);
         this.playerImage = new Image(getClass().getResourceAsStream("/asterix.png"));
-        this.prevX = x;
-        this.prevY = y;
     }
 
     public void setAttackPower(int attackPower) {
@@ -76,7 +66,7 @@ public class Asterix extends Character {
     //the tile index is not in bounds, we return 0
     public int getCurrentTile(int[][] tileMap, int x, int y) {
         int tileX = (x + 19) / tile_size;
-        int tileY = (y + 23) / tile_size;
+        int tileY = (y + 26) / tile_size;
 
         if (tileX >= 0 && tileX < tileMap[0].length && tileY >= 0 && tileY < tileMap.length) {
             return tileMap[tileY][tileX];
