@@ -1,4 +1,4 @@
-Asterix 5 5 100
+Asterix 5 5 10
 Villager 20 50 10 40 30 10 120 y
 RomanSoldier 120 170 100 200 120 150 x
 Obelix 40 100 10

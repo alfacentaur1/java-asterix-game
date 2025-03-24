@@ -89,7 +89,16 @@ public class ViewController extends Application {
             }
 
         }
+        //if it will be right in menu, load inv
+        if(true) {
+            player.loadInventory(inventory);
+        }
     }
+
+
+    //if menu option would be load - load saved inventory
+
+
 
     public static void main(String[] args) {
         launch(args);
@@ -151,6 +160,9 @@ public class ViewController extends Application {
         scene.setOnKeyPressed(event -> {
             pressedKeys.add(event.getCode());
             handleMovement();
+            if(pressedKeys.contains(KeyCode.T)) {
+                player.saveInventory(inventory);
+            }
 
         });
         //listen to mouse buttons - attack/collect

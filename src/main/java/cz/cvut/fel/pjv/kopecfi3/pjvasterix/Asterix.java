@@ -2,8 +2,13 @@ package cz.cvut.fel.pjv.kopecfi3.pjvasterix;
 
 import javafx.scene.image.Image;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 
 
@@ -159,7 +164,57 @@ public class Asterix extends Character {
             }
         }
     }
-}
+    //on pressing T - save inventory
+    public void saveInventory(Inventory inventory) {
+        int carrotCounter = 0;
+        int waterBucketCounter = 0;
+        int shroomCounter = 0;
+        for (Item item : inventory.getItems()) {
+            if(item instanceof WaterBucket) {
+                waterBucketCounter++;
+            }
+            if(item instanceof Shroom) {
+                shroomCounter++;
+            }
+            if(item instanceof Carrot) {
+                carrotCounter++;
+            }
+        }
+        try (FileWriter writer = new FileWriter("src/main/resources/inventoryAsterix")) {
+            writer.write("Carrot " + carrotCounter + "\n");
+            writer.write("WaterBucket " + waterBucketCounter + "\n");
+            writer.write("Shroom " + shroomCounter + "\n");
+            System.out.println("Inventory saved successfully.");
+        } catch (IOException e) {
+            System.err.println("Error while saving inventory: " + e.getMessage());
+        }
+
+    }
+    public void loadInventory(Inventory inventory) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/inventoryAsterix"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(" ");
+                if (parts.length != 2) continue;
+
+                String itemToAdd = parts[0];
+                int count = Integer.parseInt(parts[1]);
+
+                for (int i = 0; i < count; i++) {
+                    switch (itemToAdd) {
+                        case "Carrot" -> inventory.addItem(new Carrot(0, 0));
+                        case "WaterBucket" -> inventory.addItem(new WaterBucket(0, 0));
+                        case "Shroom" -> inventory.addItem(new Shroom(0, 0));
+                    }
+                }
+            }
+            System.out.println("Inventory loaded successfully.");
+        } catch (IOException e) {
+            System.err.println("Error while loading inventory: " + e.getMessage());
+        }
+    }}
+
+
 
 
 
