@@ -24,7 +24,7 @@ public class Obelix extends Character {
 
     //function to interact with asterix,when asterix comes close to obelix
     public void talk(GraphicsContext gc) {
-        double yPos = y - 40;
+        double yPos = y - 78;
 
         gc.setFill(javafx.scene.paint.Color.WHITE);
         gc.fillRoundRect(x, yPos, 260, 90, 10, 10);
