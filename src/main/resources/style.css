@@ -6,6 +6,7 @@
     -fx-background-image: url("/asterix-bg.jpg");
     -fx-background-size: contain;
     -fx-background-position: center;
+    -fx-alignment: center;
 }
 
 /* vbox conatiner (all components) */

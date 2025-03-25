@@ -3,15 +3,12 @@ package cz.cvut.fel.pjv.kopecfi3.pjvasterix;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
-import java.io.InputStream;
 
 public class Menu extends Application {
 
@@ -20,7 +17,7 @@ public class Menu extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        //vbox - all elements under, 10px away
+        // VBox for the overall layout
         VBox vbox = new VBox(20);
         vbox.setStyle("-fx-alignment: center; -fx-padding: 20;");
 
@@ -34,29 +31,31 @@ public class Menu extends Application {
         // RadioButton for "Yes"
         RadioButton yesRadioButton = new RadioButton("Yes");
         yesRadioButton.setToggleGroup(toggleGroup);
-        //default yes choice
+        // Default yes choice
         yesRadioButton.setSelected(true);
 
         // RadioButton for "No"
         RadioButton noRadioButton = new RadioButton("No");
         noRadioButton.setToggleGroup(toggleGroup);
 
-        // Add radio buttons to layout
-        HBox inventoryChoiceBox = new HBox(10);
+        // Text for "Load saved inventory?"
         Text inventoryText = new Text("Load saved inventory?");
-        inventoryChoiceBox.getChildren().addAll(inventoryText,yesRadioButton, noRadioButton);
 
-
-        // Add buttons and radio buttons to VBox
+        // VBox for the inventory choice and radio buttons
+        VBox inventoryChoiceBox = new VBox(10);
+        inventoryChoiceBox.getChildren().addAll(inventoryText, yesRadioButton, noRadioButton);
+        inventoryChoiceBox.setStyle("-fx-alignment: center;");
+        inventoryText.setStyle("-fx-font-size: 35px; -fx-font-weight: bold; -fx-text-fill:#FFD700 ; -fx-padding: 10px;");
+        inventoryText.setFill(javafx.scene.paint.Color.RED);
+        // Add buttons and inventoryChoiceBox to the main VBox
         vbox.getChildren().addAll(level1Button, level2Button, inventoryChoiceBox);
 
-
+        // Scene setup
         Scene scene = new Scene(vbox, 400, 640);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.setTitle("Select Level");
         primaryStage.show();
-
     }
 
     // Return "Yes" if the "Yes" radio button is selected, otherwise "No"
