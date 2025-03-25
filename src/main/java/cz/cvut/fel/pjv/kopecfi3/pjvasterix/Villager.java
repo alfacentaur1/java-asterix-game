@@ -76,26 +76,23 @@ public class Villager extends Character {
 
     //we walk towards the finish, when we reach it, we switch the final destination to start
     //if we reached the destination we just mulitply the speed by -1
-
     public void move() throws InterruptedException {
-
         if (this.walk_direction.equals("y")) {
-
             if (this.y >= this.end_y) {
-                this.speed = -(this.speed);
-            } else if (this.y <= this.start_y) {
-                this.speed = -(this.speed);
+                this.speed = -Math.abs(this.speed);
             }
-
+            else if (this.y <= this.start_y) {
+                this.speed = Math.abs(this.speed);
+            }
             this.y += this.speed;
-        } else if (this.walk_direction.equals("x")) {
-
+        }
+        else if (this.walk_direction.equals("x")) {
             if (this.x >= this.end_x) {
-                this.speed = -(this.speed);
-            } else if (this.x <= this.start_x) {
-                this.speed = (this.speed);
+                this.speed = -Math.abs(this.speed);
             }
-
+            else if (this.x <= this.start_x) {
+                this.speed = Math.abs(this.speed);
+            }
             this.x += this.speed;
         }
     }

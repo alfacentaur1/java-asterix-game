@@ -47,9 +47,9 @@ public class ViewController extends Application {
 
     // Tile map definition (0 = path, 1 = house, 2 = grass, 3 = water, 4 = bridge horizontal)
     FileLoader fileLoader = new FileLoader();
-    private int[][] tileMap = fileLoader.loadMap("src/main/resources/map1.txt");
+    private int[][] tileMap = fileLoader.loadMap("src/main/resources/map2.txt");
     EntityLoader entityLoader = new EntityLoader();
-    private ArrayList<Object> allInstances = entityLoader.loadAllMapEntities("src/main/resources/entitiesmap1.txt");
+    private ArrayList<Object> allInstances = entityLoader.loadAllMapEntities("src/main/resources/entitiesmap2.txt");
 
     //add instances to map
 //    private final Asterix player = new Asterix(5, 5, 100);

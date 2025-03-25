@@ -1,0 +1,18 @@
+Asterix 150 120 10
+RomanSoldier 100 520 100 180 100 150 x
+RomanSoldier 120 540 120 200 120 150 x
+Centurion 100 560 100 180 200 150 x
+RomanSoldier 570 330 120 400 330 460 y
+RomanSoldier 590 350 120 400 350 480 y
+Centurion 610 330 120 400 330 460 y
+Obelix 580 520 10
+Villager 120 160 10 120 160 160 120 x
+Villager 150 80 10 150 200 200 120 x
+Villager 780 400 10 150 200 400 500 y
+Panoramix 100 100 10
+Carrot 900 390
+Shroom 645 5
+WaterBucket 325 580
+Centurion 300 130 300 400 120 150 x
+RomanSoldier 320 150 320 420 120 150 x
+RomanSoldier 300 170 300 400 120 150 x
