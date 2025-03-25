@@ -1,4 +1,7 @@
-/* background app */
+
+
+
+
 .root {
     -fx-background-image: url("/asterix-bg.jpg");
     -fx-background-size: contain;
@@ -29,10 +32,15 @@
 
 /* radio buttons*/
 .radio-button {
-    -fx-font-size: 14px;
-    -fx-text-fill: black;
-    -fx-background-color: #ffffff;
-    -fx-padding: 5px;
+    -fx-font-size: 18px;
+    -fx-font-family: "Comic Sans MS", sans-serif;
+    -fx-text-fill: #8B4513;
+    -fx-background-color: #FAF0E6;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-border-color: #D2B48C;
+    -fx-border-width: 2px;
 }
 
 /* labels */

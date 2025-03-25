@@ -8,6 +8,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.InputStream;
@@ -42,7 +43,8 @@ public class Menu extends Application {
 
         // Add radio buttons to layout
         HBox inventoryChoiceBox = new HBox(10);
-        inventoryChoiceBox.getChildren().addAll(new Label("Load saved inventory?"), yesRadioButton, noRadioButton);
+        Text inventoryText = new Text("Load saved inventory?");
+        inventoryChoiceBox.getChildren().addAll(inventoryText,yesRadioButton, noRadioButton);
 
 
         // Add buttons and radio buttons to VBox
