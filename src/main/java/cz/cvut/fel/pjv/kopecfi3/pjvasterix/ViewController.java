@@ -43,14 +43,16 @@ public class ViewController extends Application {
     private Asterix player = null;
     private Obelix obelix = null;
     private Panoramix panoramix = null;
+    private GameState gameState = GameState.RUNNING;
 
 
     // Tile map definition (0 = path, 1 = house, 2 = grass, 3 = water, 4 = bridge horizontal)
     FileLoader fileLoader = new FileLoader();
-    private int[][] tileMap = fileLoader.loadMap("src/main/resources/map2.txt");
+    //private int[][] tileMap = fileLoader.loadMap("src/main/resources/map2.txt");
+    private int[][] tileMap = fileLoader.loadMap("src/main/resources/map1.txt");
     EntityLoader entityLoader = new EntityLoader();
-    private ArrayList<Object> allInstances = entityLoader.loadAllMapEntities("src/main/resources/entitiesmap2.txt");
-
+    //private ArrayList<Object> allInstances = entityLoader.loadAllMapEntities("src/main/resources/entitiesmap2.txt");
+    private ArrayList<Object> allInstances = entityLoader.loadAllMapEntities("src/main/resources/entitiesmap1.txt");
     //add instances to map
 //    private final Asterix player = new Asterix(5, 5, 100);
 //    private final Villager villager1 = new Villager(20, 50, 10, 40, 30, 10, 120, "y");
@@ -209,16 +211,65 @@ public class ViewController extends Application {
         scene.setOnKeyReleased(event -> pressedKeys.remove(event.getCode()));
 
         //main loop
+        //on end game unfocus scene key inputs - redirect them to null
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                gameState= player.checkForAttacks(player, romanSoldiers, centurions, TILE_SIZE,canvas,gc);
+                if(gameState == gameState.GAME_OVER){
+
+                    GraphicsContext gc1 = canvas.getGraphicsContext2D();
+                    redraw(gc1);
+                    String message = "GAME OVER :(";
+                    gc.setFill(Color.BLACK);
+                    gc.setFont(new Font(50));
+                    gc.fillText(message, canvas.getWidth() / 2 - gc.getFont().getSize() * message.length() / 4, canvas.getHeight() / 2);
+                    this.stop();
+                    scene.setOnKeyPressed(null);
+                    scene.setOnKeyReleased(null);
+                    return;
+                }
+                else if(gameState == gameState.WON){
+                    GraphicsContext gc1 = canvas.getGraphicsContext2D();
+                    redraw(gc1);
+                    String message = "YOU WON :)";
+                    gc.setFill(Color.BLACK);
+                    gc.setFont(new Font(50));
+                    gc.fillText(message, canvas.getWidth() / 2 - gc.getFont().getSize() * message.length() / 4, canvas.getHeight() / 2);
+                    this.stop();
+                    scene.setOnKeyPressed(null);
+                    scene.setOnKeyReleased(null);
+                    return;
+                }
+                else if(romanSoldiers.isEmpty() && centurions.isEmpty()){
+                    GraphicsContext gc1 = canvas.getGraphicsContext2D();
+                    redraw(gc1);
+                    String message = "YOU WON :)";
+                    gc.setFill(Color.BLACK);
+                    gc.setFont(new Font(50));
+                    gc.fillText(message, canvas.getWidth() / 2 - gc.getFont().getSize() * message.length() / 4, canvas.getHeight() / 2);
+                    this.stop();
+                    scene.setOnKeyPressed(null);
+                    scene.setOnKeyReleased(null);
+                    return;
+                }
+                if(gameState != gameState.RUNNING){
+                    this.stop();
+                    scene.setOnKeyPressed(null);
+                    scene.setOnKeyReleased(null);
+                    return;
+                }
                 GraphicsContext gc = canvas.getGraphicsContext2D();
                 redraw(gc);
 
                 //if some soldier or centurion is near asterix, decrease health
-                player.checkForAttacks(player, romanSoldiers, centurions, TILE_SIZE);
+
                 if (RomanSoldier.checkForEnd(romanSoldiers) && Centurion.checkForEnd(centurions)) {
-                    System.exit(0);
+                     gameState = GameState.GAME_OVER;
+                }
+                if(!player.isAlive()){
+                    gameState = GameState.GAME_OVER;
+
                 }
 
                 //if asterix is near obelix, interact

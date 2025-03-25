@@ -1,6 +1,10 @@
 package cz.cvut.fel.pjv.kopecfi3.pjvasterix;
 
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -9,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
+import javafx.scene.canvas.Canvas;
 
 
 public class Asterix extends Character {
@@ -21,6 +26,7 @@ public class Asterix extends Character {
     private long lastDamageTime = 0;
     private int manaCapacity = 5;
     private int mana = 5;
+    private GameState gameState = GameState.RUNNING;
 
     public int getAttackPower() {
         return attackPower;
@@ -136,7 +142,7 @@ public class Asterix extends Character {
     //roman - decrease once
     //centurion - decrease twice
     //if player is dead, end game
-    public void checkForAttacks(Asterix player, ArrayList<RomanSoldier> romanSoldiers, ArrayList<Centurion> centurions,int TILE_SIZE) {
+    public GameState checkForAttacks(Asterix player, ArrayList<RomanSoldier> romanSoldiers, ArrayList<Centurion> centurions,int TILE_SIZE,Canvas canvas, GraphicsContext gc) {
         long currentTime = System.currentTimeMillis();
 
         //cooldown 1 sec
@@ -148,7 +154,7 @@ public class Asterix extends Character {
                     lastDamageTime = currentTime;
 
                     if (player.getHealth() < 1) {
-                        System.exit(0) ;
+                        return GameState.GAME_OVER;
                     }
                 }
             }
@@ -160,11 +166,12 @@ public class Asterix extends Character {
                     lastDamageTime = currentTime;
 
                     if (player.getHealth() < 1) {
-                        System.exit(0) ;
+                        return GameState.GAME_OVER;
                     }
                 }
             }
         }
+        return GameState.RUNNING;
     }
     //on pressing T - save inventory
     public void saveInventory(Inventory inventory) {
