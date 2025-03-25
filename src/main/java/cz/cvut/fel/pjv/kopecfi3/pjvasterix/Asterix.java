@@ -47,7 +47,7 @@ public class Asterix extends Character {
     }
 
     public Asterix(double x, double y, int health) {
-        super(10, 10, 10);
+        super((int)x, (int)y, 10);
         this.playerImage = new Image(getClass().getResourceAsStream("/asterix.png"));
     }
 
@@ -140,7 +140,7 @@ public class Asterix extends Character {
         long currentTime = System.currentTimeMillis();
 
         //cooldown 1 sec
-        if (currentTime - lastDamageTime >= 2_000) {
+        if (currentTime - lastDamageTime >= 1_000) {
             for (RomanSoldier r : romanSoldiers) {
                 if (Math.abs(r.getX() - player.getX()) < TILE_SIZE / 4 &&
                         Math.abs(r.getY() - player.getY()) < TILE_SIZE / 4) {

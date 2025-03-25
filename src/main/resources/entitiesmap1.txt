@@ -1,9 +1,13 @@
-Asterix 5 5 10
-Villager 20 50 10 40 30 10 120 y
-RomanSoldier 120 170 100 200 120 150 x
-Obelix 40 100 10
-Panoramix 100 100 10
-Carrot 200 100
-Shroom 500 100
-WaterBucket 400 100
-Centurion 160 170 100 200 120 150 x
+Asterix 380 370 10
+RomanSoldier 120 520 120 400 120 150 x
+RomanSoldier 120 540 120 400 120 150 x
+RomanSoldier 670 100 120 400 100 500 y
+RomanSoldier 700 100 120 400 100 500 y
+Obelix 20 520 10
+Villager 330 330 10 330 400 330 120 x
+Villager 300 400 10 300 420 330 120 x
+Panoramix 300 350 10
+Carrot 900 390
+Shroom 130 5
+WaterBucket 900 70
+Centurion 160 150 100 200 120 150 x
