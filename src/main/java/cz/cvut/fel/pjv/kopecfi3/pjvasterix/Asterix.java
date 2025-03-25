@@ -17,7 +17,7 @@ public class Asterix extends Character {
     private final int map_width = ViewController.getMapWidth();
     private final int map_height = ViewController.getMapHeight();
     private Image playerImage;
-    private int speed = 10;
+    private int speed = 5;
     private long lastDamageTime = 0;
     private int manaCapacity = 5;
     private int mana = 5;

@@ -1,4 +1,4 @@
-Asterix 380 370 10
+Asterix 380 370 5
 RomanSoldier 120 520 120 400 120 150 x
 RomanSoldier 120 540 120 400 120 150 x
 RomanSoldier 670 100 120 400 100 500 y
