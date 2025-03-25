@@ -49,10 +49,10 @@ public class ViewController extends Application {
     // Tile map definition (0 = path, 1 = house, 2 = grass, 3 = water, 4 = bridge horizontal)
     FileLoader fileLoader = new FileLoader();
     //private int[][] tileMap = fileLoader.loadMap("src/main/resources/map2.txt");
-    private int[][] tileMap = fileLoader.loadMap("src/main/resources/map1.txt");
+    private int[][] tileMap;
     EntityLoader entityLoader = new EntityLoader();
     //private ArrayList<Object> allInstances = entityLoader.loadAllMapEntities("src/main/resources/entitiesmap2.txt");
-    private ArrayList<Object> allInstances = entityLoader.loadAllMapEntities("src/main/resources/entitiesmap1.txt");
+    private ArrayList<Object> allInstances;
     //add instances to map
 //    private final Asterix player = new Asterix(5, 5, 100);
 //    private final Villager villager1 = new Villager(20, 50, 10, 40, 30, 10, 120, "y");
@@ -65,8 +65,12 @@ public class ViewController extends Application {
 //    private final Centurion centurion = new Centurion(160, 170, 100, 200, 120, 150, "x");
 
 
-    public ViewController() {
+    public ViewController(String map, String instances, String loadInventory) {
         //add instances do their lists
+        allInstances= entityLoader.loadAllMapEntities("src/main/resources/"+instances);
+        tileMap= fileLoader.loadMap("src/main/resources/"+map);
+
+
         for(Object o : allInstances) {
             if(o instanceof Villager) {
                 villagers.add((Villager)o);
@@ -92,10 +96,11 @@ public class ViewController extends Application {
 
         }
         //if menu option would be load - load saved inventory
-        if(true) {
+        if(loadInventory.equals("Yes")) {
             player.loadInventory(inventory);
         }
     }
+    public void ViewController(){};
 
     public static void main(String[] args) {
         launch(args);
