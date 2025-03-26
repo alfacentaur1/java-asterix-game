@@ -44,6 +44,7 @@ public class ViewController extends Application {
     private Obelix obelix = null;
     private Panoramix panoramix = null;
     private GameState gameState = GameState.RUNNING;
+    private boolean inventoryVisible = false;
 
 
     // Tile map definition (0 = path, 1 = house, 2 = grass, 3 = water, 4 = bridge horizontal)
@@ -67,40 +68,39 @@ public class ViewController extends Application {
 
     public ViewController(String map, String instances, String loadInventory) {
         //add instances do their lists
-        allInstances= entityLoader.loadAllMapEntities("src/main/resources/"+instances);
-        tileMap= fileLoader.loadMap("src/main/resources/"+map);
+        allInstances = entityLoader.loadAllMapEntities("src/main/resources/" + instances);
+        tileMap = fileLoader.loadMap("src/main/resources/" + map);
 
 
-        for(Object o : allInstances) {
-            if(o instanceof Villager) {
-                villagers.add((Villager)o);
+        for (Object o : allInstances) {
+            if (o instanceof Villager) {
+                villagers.add((Villager) o);
             }
-            if(o instanceof RomanSoldier) {
-                romanSoldiers.add((RomanSoldier)o);
+            if (o instanceof RomanSoldier) {
+                romanSoldiers.add((RomanSoldier) o);
             }
-            if(o instanceof Item) {
-                items.add((Item)o);
+            if (o instanceof Item) {
+                items.add((Item) o);
             }
-            if(o instanceof Centurion) {
-                centurions.add((Centurion)o);
+            if (o instanceof Centurion) {
+                centurions.add((Centurion) o);
             }
-            if(o instanceof Asterix) {
-                player = (Asterix)o;
+            if (o instanceof Asterix) {
+                player = (Asterix) o;
             }
-            if(o instanceof Obelix) {
-                obelix = (Obelix)o;
+            if (o instanceof Obelix) {
+                obelix = (Obelix) o;
             }
-            if(o instanceof Panoramix) {
-                panoramix = (Panoramix)o;
+            if (o instanceof Panoramix) {
+                panoramix = (Panoramix) o;
             }
 
         }
         //if menu option would be load - load saved inventory
-        if(loadInventory.equals("Yes")) {
+        if (loadInventory.equals("Yes")) {
             player.loadInventory(inventory);
         }
     }
-    public void ViewController(){};
 
     public static void main(String[] args) {
         launch(args);
@@ -159,12 +159,24 @@ public class ViewController extends Application {
 
         //add keys pressed to the map - get code of the key and call the function
         //on key presses handle players movement
+        //while pressed Q - show inventory
+        //press C to clean whole inventory
         scene.setOnKeyPressed(event -> {
             pressedKeys.add(event.getCode());
             handleMovement();
-            if(pressedKeys.contains(KeyCode.T)) {
+            if (pressedKeys.contains(KeyCode.T)) {
                 player.saveInventory(inventory);
             }
+            if (pressedKeys.contains(KeyCode.Q)) {
+                inventoryVisible = true;
+            }
+            if (!(pressedKeys.contains(KeyCode.Q))) {
+                inventoryVisible = false;
+            }
+            if (event.getCode() == KeyCode.C) {
+                inventory = new Inventory();
+            }
+
 
         });
         Timeline manaRegeneration = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
@@ -213,18 +225,24 @@ public class ViewController extends Application {
         });
         //on release delete by code in hashmap
         //asterix can walk all directions not only left,right,up, down
-        scene.setOnKeyReleased(event -> pressedKeys.remove(event.getCode()));
+        scene.setOnKeyReleased(e -> {
+                    pressedKeys.remove(e.getCode());
+                    if (!pressedKeys.contains(KeyCode.Q)) {
+                        inventoryVisible = false;
+                    }
+                }
+        );
 
         //main loop
         //on end game unfocus scene key inputs - redirect them to null
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                gameState= player.checkForAttacks(player, romanSoldiers, centurions, TILE_SIZE,canvas,gc);
-                if(gameState == gameState.GAME_OVER){
+                gameState = player.checkForAttacks(player, romanSoldiers, centurions, TILE_SIZE, canvas, gc);
+                if (gameState == gameState.GAME_OVER) {
 
                     GraphicsContext gc1 = canvas.getGraphicsContext2D();
-                    redraw(gc1);
+                    redraw(gc1, inventoryVisible, inventory);
                     String message = "GAME OVER :(";
                     gc.setFill(Color.BLACK);
                     gc.setFont(new Font(50));
@@ -233,10 +251,20 @@ public class ViewController extends Application {
                     scene.setOnKeyPressed(null);
                     scene.setOnKeyReleased(null);
                     return;
-                }
-                else if(gameState == gameState.WON){
+                } else if (gameState == gameState.WON) {
                     GraphicsContext gc1 = canvas.getGraphicsContext2D();
-                    redraw(gc1);
+                    redraw(gc1, inventoryVisible, inventory);
+                    String message = "YOU WON :)";
+                    gc.setFill(Color.BLACK);
+                    gc.setFont(new Font(50));
+                    gc.fillText(message, canvas.getWidth() / 2 - gc.getFont().getSize() * message.length() / 4, canvas.getHeight() / 2);
+                    this.stop();
+                    scene.setOnKeyPressed(null);
+                    scene.setOnKeyReleased(null);
+                    return;
+                } else if (romanSoldiers.isEmpty() && centurions.isEmpty()) {
+                    GraphicsContext gc1 = canvas.getGraphicsContext2D();
+                    redraw(gc1, inventoryVisible, inventory);
                     String message = "YOU WON :)";
                     gc.setFill(Color.BLACK);
                     gc.setFont(new Font(50));
@@ -246,33 +274,21 @@ public class ViewController extends Application {
                     scene.setOnKeyReleased(null);
                     return;
                 }
-                else if(romanSoldiers.isEmpty() && centurions.isEmpty()){
-                    GraphicsContext gc1 = canvas.getGraphicsContext2D();
-                    redraw(gc1);
-                    String message = "YOU WON :)";
-                    gc.setFill(Color.BLACK);
-                    gc.setFont(new Font(50));
-                    gc.fillText(message, canvas.getWidth() / 2 - gc.getFont().getSize() * message.length() / 4, canvas.getHeight() / 2);
-                    this.stop();
-                    scene.setOnKeyPressed(null);
-                    scene.setOnKeyReleased(null);
-                    return;
-                }
-                if(gameState != gameState.RUNNING){
+                if (gameState != gameState.RUNNING) {
                     this.stop();
                     scene.setOnKeyPressed(null);
                     scene.setOnKeyReleased(null);
                     return;
                 }
                 GraphicsContext gc = canvas.getGraphicsContext2D();
-                redraw(gc);
+                redraw(gc, inventoryVisible, inventory);
 
                 //if some soldier or centurion is near asterix, decrease health
 
                 if (RomanSoldier.checkForEnd(romanSoldiers) && Centurion.checkForEnd(centurions)) {
-                     gameState = GameState.GAME_OVER;
+                    gameState = GameState.GAME_OVER;
                 }
-                if(!player.isAlive()){
+                if (!player.isAlive()) {
                     gameState = GameState.GAME_OVER;
 
                 }
@@ -349,10 +365,6 @@ public class ViewController extends Application {
     }
 
 
-
-    /**
-     * Draws the tile map on the canvas.
-     */
     //goes through the tilemap definition and loops, based on number input draws desired tile
     private void drawMap(GraphicsContext gc) {
         for (int y = 0; y < MAP_HEIGHT; y++) {
@@ -381,12 +393,9 @@ public class ViewController extends Application {
     }
 
     //redraw the map on every iteration of game loop
-    private void redraw(GraphicsContext gc) {
+    private void redraw(GraphicsContext gc, Boolean visibleInventory, Inventory inventory) {
         drawMap(gc);
         drawItems(gc);
-        drawPlayer(gc);
-        drawStatusBar(gc);
-
 
         try {
             for (Villager v : villagers) {
@@ -401,11 +410,14 @@ public class ViewController extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        drawVillagers(gc);
         drawRomans(gc);
         drawCenturions(gc);
         drawObelix(gc);
+        drawStatusBar(gc);
         drawPanoramix(gc);
+        drawVillagers(gc);
+        drawPlayer(gc);
+        drawInventory(gc, visibleInventory, inventory);
 
     }
 
@@ -427,7 +439,7 @@ public class ViewController extends Application {
         }
 
         player.move(dx, dy, tileMap);
-        redraw(canvas.getGraphicsContext2D());
+        redraw(canvas.getGraphicsContext2D(), inventoryVisible, inventory);
 
     }
 
@@ -544,7 +556,7 @@ public class ViewController extends Application {
 
         // asterix image
         Image asterix = new Image(getClass().getResourceAsStream("/asterix.png"));
-        gc.drawImage(asterix, statusBarX-5, statusBarY +10, 50, 50);
+        gc.drawImage(asterix, statusBarX - 5, statusBarY + 10, 50, 50);
 
         // Mana
         gc.setFill(Color.BLACK);
@@ -553,7 +565,7 @@ public class ViewController extends Application {
         int mana = player.getMana();
         int manaSize = 10; //px of one brick
         double manaStartX = statusBarX + 40; //start y axis
-        double manaStartY = statusBarY +60; //start x axis
+        double manaStartY = statusBarY + 60; //start x axis
 
 
         gc.setFill(Color.DARKBLUE);
@@ -562,17 +574,52 @@ public class ViewController extends Application {
         }
     }
 
+    public void drawInventory(GraphicsContext gc, Boolean inventoryVisible, Inventory inventory) {
+        if (inventoryVisible) {
+            double inventoryWidth = 500;
+            double inventoryHeight = 400;
 
+            double inventoryX = (canvas.getWidth() - inventoryWidth) / 2;
+            double inventoryY = (canvas.getHeight() - inventoryHeight) / 2;
+
+            gc.setFill(Color.LIGHTGRAY);
+            gc.fillRect(inventoryX, inventoryY, inventoryWidth, inventoryHeight);
+
+
+            double slotSize = Math.min(inventoryWidth / 3, inventoryHeight / 2);
+            int cols = 3;
+            int rows = 2;
+
+
+            int index = 0;
+            for (int row = 0; row < rows; row++) {
+                for (int col = 0; col < cols; col++) {
+                    double slotX = inventoryX + (col * slotSize);
+                    double slotY = inventoryY + (row * slotSize);
+
+                    if (index < inventory.getSize()) {
+                        Item item = inventory.getItem(index);
+                        if (item.getImage() != null && item instanceof Shroom) {
+                            Image shroomy = new Image(getClass().getResourceAsStream("/mushroom.png"));
+                            gc.drawImage(shroomy, slotX, slotY, slotSize, slotSize);
+                        }
+                        else if(item.getImage() != null && !(item instanceof Shroom)){
+                            gc.drawImage(item.getImage(), slotX, slotY, slotSize, slotSize);
+                        }
+                        else {
+                            gc.setFill(Color.GRAY);
+                            gc.fillRect(slotX, slotY, slotSize, slotSize);
+                        }
+                    } else {
+                        gc.setFill(Color.GRAY);
+                        gc.fillRect(slotX, slotY, slotSize, slotSize);
+                    }
+                    index++;
+                }
+            }
+            gc.setFill(Color.BLACK);
+            gc.setFont(new Font(14));
+            gc.fillText("For cleaning whole inventory, press C", inventoryWidth-130 , inventoryY+inventoryHeight-30);
+        }
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-

@@ -5,7 +5,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -17,40 +16,39 @@ public class Menu extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        // VBox for the overall layout
+        // vbox as container for level buttons
+        primaryStage.setResizable(false);
         VBox vbox = new VBox(20);
         vbox.setStyle("-fx-alignment: center; -fx-padding: 20;");
 
-        // Buttons for levels
+        //buttons
         Button level1Button = new Button("Level 1");
         level1Button.setOnAction(e -> startGame("map1.txt", "entitiesmap1.txt"));
 
         Button level2Button = new Button("Level 2");
         level2Button.setOnAction(e -> startGame("map2.txt", "entitiesmap2.txt"));
 
-        // RadioButton for "Yes"
         RadioButton yesRadioButton = new RadioButton("Yes");
         yesRadioButton.setToggleGroup(toggleGroup);
         // Default yes choice
-        yesRadioButton.setSelected(true);
 
-        // RadioButton for "No"
         RadioButton noRadioButton = new RadioButton("No");
         noRadioButton.setToggleGroup(toggleGroup);
+        noRadioButton.setSelected(true);
 
-        // Text for "Load saved inventory?"
         Text inventoryText = new Text("Load saved inventory?");
 
-        // VBox for the inventory choice and radio buttons
+        // vbox for invenotry buttons
         VBox inventoryChoiceBox = new VBox(10);
+
         inventoryChoiceBox.getChildren().addAll(inventoryText, yesRadioButton, noRadioButton);
         inventoryChoiceBox.setStyle("-fx-alignment: center;");
         inventoryText.setStyle("-fx-font-size: 35px; -fx-font-weight: bold; -fx-text-fill:#FFD700 ; -fx-padding: 10px;");
-        inventoryText.setFill(javafx.scene.paint.Color.RED);
+        inventoryText.setFill(javafx.scene.paint.Color.WHITE);
         // Add buttons and inventoryChoiceBox to the main VBox
         vbox.getChildren().addAll(level1Button, level2Button, inventoryChoiceBox);
 
-        // Scene setup
+        // scene setup
         Scene scene = new Scene(vbox, 400, 640);
         scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         primaryStage.setScene(scene);
@@ -67,6 +65,7 @@ public class Menu extends Application {
         return "No"; // Default if no radio button is selected
     }
 
+    //create new instance of viewcontroller
     private void startGame(String map, String instances) {
         String inventoryChoice = getInventoryChoice();
         ViewController gameApp = new ViewController(map, instances, inventoryChoice);

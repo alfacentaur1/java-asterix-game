@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class Inventory {
-    private static final int CAPACITY = 7;
+    private static final int CAPACITY = 6;
     private static ArrayList<Item> items;
 
     public Inventory() {
@@ -53,6 +53,10 @@ public class Inventory {
 
     public ArrayList<Item> empty() {
         return new ArrayList<Item>();
+    }
+
+    public Item getItem(int pos) {
+        return items.get(pos);
     }
 
 }
