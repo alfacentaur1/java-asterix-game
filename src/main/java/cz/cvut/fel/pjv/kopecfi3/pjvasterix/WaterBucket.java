@@ -9,8 +9,4 @@ public class WaterBucket extends Item {
         image = new Image(getClass().getResourceAsStream("/bucket.png"));
     }
 
-    @Override
-    public void collect(Asterix asterix) {
-
-    }
 }

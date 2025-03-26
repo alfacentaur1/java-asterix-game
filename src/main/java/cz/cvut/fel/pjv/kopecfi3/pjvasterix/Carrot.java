@@ -9,8 +9,5 @@ public class Carrot extends Item {
         image = new Image(getClass().getResourceAsStream("/carrot.png"));
     }
 
-    @Override
-    public void collect(Asterix asterix) {
 
-    }
 }

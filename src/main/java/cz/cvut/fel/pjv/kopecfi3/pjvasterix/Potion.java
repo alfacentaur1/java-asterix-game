@@ -9,8 +9,4 @@ public class Potion extends Item{
         image = new Image(getClass().getResourceAsStream("/potion.png"));
     }
 
-    @Override
-    public void collect(Asterix asterix) {
-
-    }
 }

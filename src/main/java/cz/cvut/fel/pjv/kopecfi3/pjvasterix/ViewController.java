@@ -413,10 +413,10 @@ public class ViewController extends Application {
         drawRomans(gc);
         drawCenturions(gc);
         drawObelix(gc);
-        drawStatusBar(gc);
         drawPanoramix(gc);
         drawVillagers(gc);
         drawPlayer(gc);
+        drawStatusBar(gc);
         drawInventory(gc, visibleInventory, inventory);
 
     }

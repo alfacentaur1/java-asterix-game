@@ -38,8 +38,8 @@ public class Menu extends Application {
 
         Text inventoryText = new Text("Load saved inventory?");
 
-        // vbox for invenotry buttons
-        VBox inventoryChoiceBox = new VBox(10);
+        // vbox for invenotry buttons,10px between children
+        VBox inventoryChoiceBox = new VBox(15);
 
         inventoryChoiceBox.getChildren().addAll(inventoryText, yesRadioButton, noRadioButton);
         inventoryChoiceBox.setStyle("-fx-alignment: center;");

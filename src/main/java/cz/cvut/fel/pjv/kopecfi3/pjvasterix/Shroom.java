@@ -9,8 +9,5 @@ public class Shroom extends Item{
         image = new Image(getClass().getResourceAsStream("/shroom.png"));
     }
 
-    @Override
-    public void collect(Asterix asterix) {
 
-    }
 }
