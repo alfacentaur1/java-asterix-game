@@ -33,7 +33,7 @@ public class Watches extends Thread {
     public void drawTime() {
         gc.setFill(Color.BLACK);
         gc.setFont(new Font("Arial", 10));
-        gc.fillText("Time spend on level: " + String.format("%.1f", seconds) + "s", 760,538);
+        gc.fillText("Time spend on level: " + String.format("%.0f", seconds) + "s", 760,538);
     }
     public void stopWatches(){
         runs = false;
