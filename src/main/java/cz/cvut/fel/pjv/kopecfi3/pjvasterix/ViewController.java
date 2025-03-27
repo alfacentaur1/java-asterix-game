@@ -45,6 +45,7 @@ public class ViewController extends Application {
     private Panoramix panoramix = null;
     private GameState gameState = GameState.RUNNING;
     private boolean inventoryVisible = false;
+    private Watches watches;
 
 
     // Tile map definition (0 = path, 1 = house, 2 = grass, 3 = water, 4 = bridge horizontal)
@@ -155,6 +156,9 @@ public class ViewController extends Application {
         drawCenturions(gc);
         drawObelix(gc);
         drawStatusBar(gc);
+        watches = new Watches(gc);
+        watches.start();
+        watches.drawTime();
 
 
         //add keys pressed to the map - get code of the key and call the function
@@ -250,6 +254,7 @@ public class ViewController extends Application {
                     this.stop();
                     scene.setOnKeyPressed(null);
                     scene.setOnKeyReleased(null);
+                    watches.stopWatches();
                     return;
                 } else if (gameState == gameState.WON) {
                     GraphicsContext gc1 = canvas.getGraphicsContext2D();
@@ -261,6 +266,7 @@ public class ViewController extends Application {
                     this.stop();
                     scene.setOnKeyPressed(null);
                     scene.setOnKeyReleased(null);
+                    watches.stopWatches();
                     return;
                 } else if (romanSoldiers.isEmpty() && centurions.isEmpty()) {
                     GraphicsContext gc1 = canvas.getGraphicsContext2D();
@@ -272,12 +278,14 @@ public class ViewController extends Application {
                     this.stop();
                     scene.setOnKeyPressed(null);
                     scene.setOnKeyReleased(null);
+                    watches.stopWatches();
                     return;
                 }
                 if (gameState != gameState.RUNNING) {
                     this.stop();
                     scene.setOnKeyPressed(null);
                     scene.setOnKeyReleased(null);
+                    watches.stopWatches();
                     return;
                 }
                 GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -396,6 +404,7 @@ public class ViewController extends Application {
     private void redraw(GraphicsContext gc, Boolean visibleInventory, Inventory inventory) {
         drawMap(gc);
         drawItems(gc);
+        watches.drawTime();
 
         try {
             for (Villager v : villagers) {
