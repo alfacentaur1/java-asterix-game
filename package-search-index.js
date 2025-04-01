@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"cz.cvut.fel.pjv.kopecfi3.pjvasterix","l":"cz.cvut.fel.pjv.kopecfi3.pjvasterix"}];updateSearchResults();
