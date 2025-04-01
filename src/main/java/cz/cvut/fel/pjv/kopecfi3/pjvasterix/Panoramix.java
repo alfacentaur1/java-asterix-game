@@ -1,13 +1,9 @@
 package cz.cvut.fel.pjv.kopecfi3.pjvasterix;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.Font;
-import javafx.util.Duration;
-
 import java.util.ArrayList;
 
 public class Panoramix extends Character {
@@ -20,12 +16,16 @@ public class Panoramix extends Character {
         return image;
     }
 
-    //strength potion - i
-    //health potion - o
-    //attack potion - p
-    //if asterix is near enough panoramix, he will check for resources in his inventory
-    //if he doesn't have enough resources, he will say "go away"
-    //else asterix can choose which potion he would like
+    /**
+     * strength potion - i
+     * health potion - o
+     * attack potion - p
+     * if asterix is near enough panoramix, he will check for resources in his inventory
+     * if he doesn't have enough resources, he will say "go away"
+     * else asterix can choose which potion he would like
+     * @param gc graphics context
+     * @return true if asterix has enough resources else false
+     */
     public boolean enoughResources( GraphicsContext gc) {
         double yPos = y - 40;
         ArrayList<Item> items = Inventory.getItems();
@@ -65,7 +65,13 @@ public class Panoramix extends Character {
 
     }
 
-    //returns string of potion which asterix has ordered
+
+    /**
+     * returns string of potion which asterix has ordered
+     * @param keyPressed keypress near panoramix, choice for potion
+     * @param gc graphic context
+     * @return String of potion name chose
+     */
     public String craftPotion(KeyCode keyPressed,GraphicsContext gc) {
         double yPos = y - 40;
         gc.setFill(javafx.scene.paint.Color.WHITE);

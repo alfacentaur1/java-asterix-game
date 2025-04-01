@@ -6,6 +6,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class EntityLoader {
+    /**
+     *this method reads a file containing entity definitions and initializes objects based on the data
+     * entities are added to a list and returned
+     * @param filename name of filename as String, that we are loading entities from
+     * @return list of entities - characters
+     */
     public ArrayList<Object> loadAllMapEntities(String filename) {
         ArrayList<Object> entities = new ArrayList<>();
 

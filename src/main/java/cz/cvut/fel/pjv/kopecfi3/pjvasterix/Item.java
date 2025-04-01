@@ -12,23 +12,6 @@ public abstract class Item {
         this.mapX = x;
         this.mapY = y;
     }
-
-    public double getMapX() {
-        return mapX;
-    }
-
-    public void setMapX(double mapX) {
-        this.mapX = mapX;
-    }
-
-    public double getMapY() {
-        return mapY;
-    }
-
-    public void setMapY(double mapY) {
-        this.mapY = mapY;
-    }
-
     public double getX() {
         return x;
     }
@@ -49,6 +32,5 @@ public abstract class Item {
         return image;
     }
 
-    //Asterix will collect items and save them into inventory
 
 }

@@ -4,8 +4,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 
-import java.awt.*;
-
 public class Obelix extends Character {
     private Image image;
     private String text1 = "Hello Asterix, ";
@@ -22,7 +20,11 @@ public class Obelix extends Character {
         return image;
     }
 
-    //function to interact with asterix,when asterix comes close to obelix
+
+    /**
+     * function to interact with asterix,when asterix comes close to obelix
+     * @param gc graphics context
+     */
     public void talk(GraphicsContext gc) {
         double yPos = y - 78;
 
@@ -41,6 +43,6 @@ public class Obelix extends Character {
         gc.fillText(text4, x + 10, yPos + 60);
         gc.fillText(text5, x + 10, yPos + 75);
     }
-    }
+}
 
 

@@ -13,6 +13,10 @@ public class Menu extends Application {
 
     private ToggleGroup toggleGroup = new ToggleGroup();
 
+    /**
+     * sets the main menu for level and inventory choice
+     * @param primaryStage primary stage
+     */
     @Override
     public void start(Stage primaryStage) {
 

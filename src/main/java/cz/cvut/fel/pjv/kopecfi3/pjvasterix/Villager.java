@@ -74,30 +74,41 @@ public class Villager extends Character {
     }
 
 
-    //we walk towards the finish, when we reach it, we switch the final destination to start
-    //if we reached the destination we just mulitply the speed by -1
+    /**
+     * we walk towards the finish, when we reach it, we switch the final destination to start
+     * if we reached the destination we just multiply the speed by -1
+     * @throws InterruptedException
+     */
     public void move() throws InterruptedException {
+        // Check the movement direction - if moving along the Y-axis
         if (this.walk_direction.equals("y")) {
+            // if the upper movement limit is reached, reverse the direction
             if (this.y >= this.end_y) {
                 this.speed = -Math.abs(this.speed);
             }
+            // ff the lower movement limit is reached, reverse the direction
             else if (this.y <= this.start_y) {
                 this.speed = Math.abs(this.speed);
             }
+            // update the Y position
             this.y += this.speed;
         }
+        // Check the movement direction - if moving along the X-axis
         else if (this.walk_direction.equals("x")) {
+            // If the right movement limit is reached, reverse the direction
             if (this.x >= this.end_x) {
                 this.speed = -Math.abs(this.speed);
             }
+            // If the left movement limit is reached, reverse the direction
             else if (this.x <= this.start_x) {
                 this.speed = Math.abs(this.speed);
             }
+            // Update the X position
             this.x += this.speed;
         }
     }
 
-    }
+}
 
 
 

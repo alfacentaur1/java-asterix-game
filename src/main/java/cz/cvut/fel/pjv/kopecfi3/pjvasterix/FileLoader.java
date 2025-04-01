@@ -11,6 +11,15 @@ public class FileLoader {
 
     private int[][] tileMap;
 
+    /**
+     * loads a map from a given file and returns it as a 2D integer array.
+     *
+     * method reads the file line by line, parsing integer values into a temporary list
+     * which is then converted into a 2D array
+     *
+     * @param filename The name of the file to be loaded.
+     * @return A 2D integer array representing the map, or null if an error occurs
+     */
     public int[][] loadMap(String filename) {
         List<int[]> tempMap = new ArrayList<>();
 

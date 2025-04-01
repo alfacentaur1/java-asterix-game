@@ -2,10 +2,6 @@ package cz.cvut.fel.pjv.kopecfi3.pjvasterix;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -60,9 +56,15 @@ public class Asterix extends Character {
     public void setAttackPower(int attackPower) {
         this.attackPower = attackPower;
     }
-    //main function for moving asterix
-    //we calculate new location based on speed input
-    //then we check if asterix's new location won't be out of bounds or water or rock
+
+    /**
+     * main function for moving asterix
+     * we calculate new location based on speed input
+     * then we check if asterix's new location won't be out of bounds or water or rock
+     * @param dx current player's position x
+     * @param dy current player's position y
+     * @param tileMap current loaded map
+     */
     public void move(int dx, int dy, int[][] tileMap) {
         int new_x = (int) x + dx;
         int new_y = (int) y + dy;
@@ -76,7 +78,18 @@ public class Asterix extends Character {
     //function to get the tiles
     //we calculate x index from x coord + picture offset divided by tile
     //same y index to tilemap array
-    //the tile index is not in bounds, we return 0
+    //
+
+    /**
+     * function to get the tiles
+     * we calculate x index from x coord + picture offset divided by tile
+     * same y index to tilemap array
+     * the tile index is not in bounds, we return 0
+     * @param tileMap current loaded map
+     * @param x current player's position x
+     * @param y current player's position y
+     * @return number in tilemap
+     */
     public int getCurrentTile(int[][] tileMap, int x, int y) {
         int tileX = (x + 13) / tile_size;
         int tileY = (y + 30) / tile_size;
@@ -88,11 +101,20 @@ public class Asterix extends Character {
         return 0;
     }
 
-    //loop through romans, decrement is for not to go out of bounds
-    //attack only if asterix's mana is > 0
-    //if event on right mouse click happens and some romans/centurions are near, we will decrease their health
-    //if their health is 0, we remove them from the arraylist of roman soldiers/centurions
-    //if centurion is dead, it has 1/3 chance to drop the potion
+
+    /**
+     *loop through romans, decrement is for not to go out of bounds
+     * attack only if asterix's mana is > 0
+     * if event on right mouse click happens and some romans/centurions are near, we will decrease their health
+     * if their health is 0, we remove them from the arraylist of roman soldiers/centurions
+     * if centurion is dead, it has 1/3 chance to drop the potion
+     * @param player      character performing the attack
+     * @param romanSoldiers list of Roman soldiers currently in the game
+     * @param centurions  list of centurions currently in the game
+     * @param TILE_SIZE    tile size used to determine attack range
+     * @param items        list of items currently available in the game
+     * @return a new list of items including any potions dropped by defeated centurions
+     */
     public ArrayList<Item> attack(Asterix player, ArrayList<RomanSoldier> romanSoldiers, ArrayList<Centurion> centurions, int TILE_SIZE, ArrayList<Item> items) {
         ArrayList<Item> newItems = new ArrayList<>(items);
         Random random = new Random();
@@ -142,6 +164,17 @@ public class Asterix extends Character {
     //roman - decrease once
     //centurion - decrease twice
     //if player is dead, end game
+
+    /**
+     *
+     * @param player       player character (Asterix) being checked for attacks
+     * @param romanSoldiers list of Roman soldiers currently in the game
+     * @param centurions   list of centurions currently in the game
+     * @param TILE_SIZE    tile size used to determine attack range
+     * @param canvas       canvas where the game is being rendered
+     * @param gc           graphics context used for rendering
+     * @return the current game state: either RUNNING or GAME_OVER if Asterix's health reaches zero
+     */
     public GameState checkForAttacks(Asterix player, ArrayList<RomanSoldier> romanSoldiers, ArrayList<Centurion> centurions,int TILE_SIZE,Canvas canvas, GraphicsContext gc) {
         long currentTime = System.currentTimeMillis();
 
@@ -174,6 +207,11 @@ public class Asterix extends Character {
         return GameState.RUNNING;
     }
     //on pressing T - save inventory
+
+    /**
+     * save inventory on current state into InventoryAsterix
+     * @param inventory current player's inventory
+     */
     public void saveInventory(Inventory inventory) {
         int carrotCounter = 0;
         int waterBucketCounter = 0;

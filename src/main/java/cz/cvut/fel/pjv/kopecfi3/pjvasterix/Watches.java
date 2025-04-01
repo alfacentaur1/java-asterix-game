@@ -17,6 +17,9 @@ public class Watches extends Thread {
         this.gc = gc;
     }
 
+    /**
+     * function to count current time in game - seconds
+     */
     public void run(){
         startTime = System.currentTimeMillis();
         while (runs) {
@@ -30,6 +33,9 @@ public class Watches extends Thread {
         }
     }
 
+    /**
+     * function to draw time
+     */
     public void drawTime() {
         gc.setFill(Color.BLACK);
         gc.setFont(new Font("Arial", 10));
@@ -38,6 +44,6 @@ public class Watches extends Thread {
     public void stopWatches(){
         runs = false;
     }
-    }
+}
 
 

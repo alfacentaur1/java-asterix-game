@@ -29,8 +29,11 @@ public class RomanSoldier extends Character {
         return playerImage;
     }
 
-    //we walk towards the finish, when we reach it, we switch the final destination to start
-    //if we reached the destination we just multiply the speed by -1
+    /**
+     * we walk towards the finish, when we reach it, we switch the final destination to start
+     * if we reached the destination we just multiply the speed by -1
+     * @throws InterruptedException
+     */
     public void move() throws InterruptedException {
         if (this.walk_direction.equals("y")) {
             if (this.y >= this.end_y) {
@@ -56,6 +59,11 @@ public class RomanSoldier extends Character {
         this.health--;
     }
     //we check for the end of the game - if there are no romans left - return true,else false
+    /**
+     * check for the end of the game - if there are no romans left - return true,else false
+     * @param romanSoldiers current list of romansoldiers in game
+     * @return true if there are no romans left else return false
+     */
     public static boolean checkForEnd(ArrayList<RomanSoldier> romanSoldiers) {
         int counter = 0;
         for(RomanSoldier romanSoldier : romanSoldiers) {

@@ -127,7 +127,10 @@ public class ViewController extends Application {
         return MAP_HEIGHT;
     }
 
-
+    /**
+     * start function
+     * @param stage current stage to start gamelooping
+     */
     @Override
     public void start(Stage stage) {
         grass = new Image(getClass().getResourceAsStream("/grass.png"));
@@ -237,8 +240,11 @@ public class ViewController extends Application {
                 }
         );
 
-        //main loop
+
         //on end game unfocus scene key inputs - redirect them to null
+        /**
+         * main loop
+         */
         AnimationTimer gameLoop = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -583,6 +589,12 @@ public class ViewController extends Application {
         }
     }
 
+    /**
+     * function to show inventory
+     * @param gc graphic context
+     * @param inventoryVisible if the key is pressed to make inventory visible - Q
+     * @param inventory current players inventory
+     */
     public void drawInventory(GraphicsContext gc, Boolean inventoryVisible, Inventory inventory) {
         if (inventoryVisible) {
             double inventoryWidth = 500;

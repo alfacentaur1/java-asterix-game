@@ -30,6 +30,20 @@ public class Inventory {
     }
 
     //if mouseX and mouseY coord are near the item image AND player is near it too, we will add the item to inventory
+
+    /**
+     * searches for items near a specified location and the player.
+     *
+     * if an item is within a specified pixel range to both the mouse coordinates and the player,
+     * it is returned. If the item is a potion, it is removed from the list.</p>
+     *
+     * @param items      list of available items
+     * @param x          mouse x click coordinates
+     * @param y          mouse x click coordinates
+     * @param tile_size  tile size
+     * @param player     player character
+     * @return the found item, or null if no item is nearby
+     */
     public Item searchItems(ArrayList<Item> items, double x, double y, int tile_size, Asterix player) {
         for (Item item : items) {
             if (Math.abs(item.getX() - x) < tile_size / 2
@@ -41,7 +55,6 @@ public class Inventory {
                 if (item instanceof Potion) {
                     items.remove(item);
                 }
-                System.out.println("returning item");
                 return item;
             }
         }
