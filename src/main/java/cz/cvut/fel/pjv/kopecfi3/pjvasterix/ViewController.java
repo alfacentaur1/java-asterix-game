@@ -215,7 +215,7 @@ public class ViewController extends Application {
 
                 //check if player can collect the item
                 //check if inventory is not full and add item
-                Item itemToAdd = inventory.searchItems(items, mouseX, mouseY, TILE_SIZE, player);
+                Item itemToAdd = inventory.searchItems(items, mouseX, mouseY, TILE_SIZE, player,inventory);
                 if (itemToAdd != null) {
                     if (inventory.getSize() < 6 || inventory == null) {
                         if (itemToAdd instanceof Potion) {

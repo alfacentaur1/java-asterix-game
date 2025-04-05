@@ -9,6 +9,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * @author Filip Kopecký
+ */
+
 public class Menu extends Application {
 
     private ToggleGroup toggleGroup = new ToggleGroup();
