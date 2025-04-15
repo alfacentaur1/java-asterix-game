@@ -13,9 +13,9 @@ import javafx.scene.media.MediaPlayer;
 
 
 public class Asterix extends Character {
-    String path_sword = getClass().getResource("/sword.mp3").toExternalForm();
-    Media media_sword = new Media(path_sword);
-    MediaPlayer mediaPlayerSword = new MediaPlayer(media_sword);
+    private String path_sword = getClass().getResource("/sword_roman.mp3").toExternalForm();
+    private Media media_sword = new Media(path_sword);
+    private MediaPlayer mediaPlayerSword = new MediaPlayer(media_sword);
 
     private int attackPower = 1;
     private final int tile_size = ViewController.getTILE_SIZE();
