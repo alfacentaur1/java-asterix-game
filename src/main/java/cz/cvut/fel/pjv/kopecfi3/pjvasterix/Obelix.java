@@ -10,7 +10,7 @@ public class Obelix extends Character {
     private String text2 = "the water bucket should be somewhere near the water,";
     private String text3 = "but I have forgotten, where I put it.";
     private String text4 = "BTW, for Panoramix you will need";
-    private String text5 = "1 bucket, 2 shrooms, 2 carrots";
+    private String text5 = "2 buckets, 2 shrooms, 2 carrots";
     public Obelix(int x, int y, int health) {
         super(x, y, health);
         image = new Image(getClass().getResourceAsStream("/obelix.png"));

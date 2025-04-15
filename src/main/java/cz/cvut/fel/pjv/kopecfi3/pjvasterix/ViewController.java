@@ -15,8 +15,12 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 
+
+import java.io.File;
 import java.util.*;
 
 
@@ -46,6 +50,8 @@ public class ViewController extends Application {
     private GameState gameState = GameState.RUNNING;
     private boolean inventoryVisible = false;
     private Watches watches;
+    private MediaPlayer mediaPlayerSword;
+    private boolean isSwordPlaying = false;
 
 
     // Tile map definition (0 = path, 1 = house, 2 = grass, 3 = water, 4 = bridge horizontal)
@@ -55,16 +61,6 @@ public class ViewController extends Application {
     EntityLoader entityLoader = new EntityLoader();
     //private ArrayList<Object> allInstances = entityLoader.loadAllMapEntities("src/main/resources/entitiesmap2.txt");
     private ArrayList<Object> allInstances;
-    //add instances to map
-//    private final Asterix player = new Asterix(5, 5, 100);
-//    private final Villager villager1 = new Villager(20, 50, 10, 40, 30, 10, 120, "y");
-//    private final RomanSoldier roman1 = new RomanSoldier(120, 170, 100, 200, 120, 150, "x");
-//    private final Obelix obelix = new Obelix(40, 100, 10);
-//    private final Panoramix panoramix = new Panoramix(100, 100, 10);
-//    private final Carrot carrot = new Carrot(200, 100);
-//    private final Shroom shroom = new Shroom(500, 100);
-//    private final WaterBucket waterBucket = new WaterBucket(400, 100);
-//    private final Centurion centurion = new Centurion(160, 170, 100, 200, 120, 150, "x");
 
 
     public ViewController(String map, String instances, String loadInventory) {
@@ -133,6 +129,11 @@ public class ViewController extends Application {
      */
     @Override
     public void start(Stage stage) {
+        String path_sword = getClass().getResource("/sword.mp3").toExternalForm();
+        Media media_sword = new Media(path_sword);
+        mediaPlayerSword = new MediaPlayer(media_sword);
+
+
         grass = new Image(getClass().getResourceAsStream("/grass.png"));
         house = new Image(getClass().getResourceAsStream("/House_Blue.png"));
         path = new Image(getClass().getResourceAsStream("/path.png"));
@@ -200,6 +201,17 @@ public class ViewController extends Application {
                 if (player.getMana() > 0) {
                     items = player.attack(player, romanSoldiers, centurions, TILE_SIZE, items);
                     player.setPlayerImage(asterixattack);
+                    if (!isSwordPlaying) {
+                        mediaPlayerSword.stop();
+                        mediaPlayerSword.play();
+                        isSwordPlaying = true;
+
+                        Timeline resetSwordSound = new Timeline(new KeyFrame(Duration.millis(500), e -> {
+                            isSwordPlaying = false;
+                        }));
+                        resetSwordSound.setCycleCount(1);
+                        resetSwordSound.play();
+                    }
                     player.decreaseMana(player);
                     Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), e -> {
                         player.setPlayerImage(asterix);
@@ -376,7 +388,9 @@ public class ViewController extends Application {
         gameLoop.start();
         stage.show();
         root.requestFocus();
+
     }
+
 
 
     //goes through the tilemap definition and loops, based on number input draws desired tile

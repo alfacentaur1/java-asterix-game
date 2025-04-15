@@ -6,8 +6,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 /**
  * @author Filip Kopecký
@@ -16,6 +20,7 @@ import javafx.stage.Stage;
 public class Menu extends Application {
 
     private ToggleGroup toggleGroup = new ToggleGroup();
+    private MediaPlayer mediaPlayer; //for garbage collector not to collect it
 
     /**
      * sets the main menu for level and inventory choice
@@ -23,6 +28,18 @@ public class Menu extends Application {
      */
     @Override
     public void start(Stage primaryStage) {
+        String path_media_song = getClass().getResource("/song.mp3").toExternalForm();
+        Media media_song = new Media(path_media_song);
+        mediaPlayer = new MediaPlayer(media_song);
+
+        // on the end of the song play again
+        mediaPlayer.setOnEndOfMedia(() -> {
+            mediaPlayer.seek(javafx.util.Duration.ZERO);
+            mediaPlayer.play();
+        });
+
+        mediaPlayer.setVolume(0.3);
+        mediaPlayer.play();
 
         // vbox as container for level buttons
         primaryStage.setResizable(false);
@@ -79,6 +96,7 @@ public class Menu extends Application {
         ViewController gameApp = new ViewController(map, instances, inventoryChoice);
         gameApp.start(new Stage());
     }
+
 
     public static void main(String[] args) {
         launch(args);

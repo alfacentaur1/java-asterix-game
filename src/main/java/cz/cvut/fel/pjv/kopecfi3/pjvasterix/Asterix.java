@@ -2,17 +2,21 @@ package cz.cvut.fel.pjv.kopecfi3.pjvasterix;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 
 public class Asterix extends Character {
+    String path_sword = getClass().getResource("/sword.mp3").toExternalForm();
+    Media media_sword = new Media(path_sword);
+    MediaPlayer mediaPlayerSword = new MediaPlayer(media_sword);
+
     private int attackPower = 1;
     private final int tile_size = ViewController.getTILE_SIZE();
     private final int map_width = ViewController.getMapWidth();
@@ -126,7 +130,6 @@ public class Asterix extends Character {
                 for(int i = 0;i < this.getAttackPower();i++){
                     r.decreaseHealth();
                 }
-                r.decreaseHealth();
                 if (r.getHealth() <= 0) {
                     romanIterator.remove();
                 }
@@ -184,6 +187,8 @@ public class Asterix extends Character {
                 if (Math.abs(r.getX() - player.getX()) < TILE_SIZE / 4 &&
                         Math.abs(r.getY() - player.getY()) < TILE_SIZE / 4) {
                     player.decreaseHealth();
+                    mediaPlayerSword.stop();
+                    mediaPlayerSword.play();
                     lastDamageTime = currentTime;
 
                     if (player.getHealth() < 1) {
@@ -196,6 +201,8 @@ public class Asterix extends Character {
                         Math.abs(c.getY() - player.getY()) < TILE_SIZE / 4) {
                     player.decreaseHealth();
                     player.decreaseHealth();
+                    mediaPlayerSword.stop();
+                    mediaPlayerSword.play();
                     lastDamageTime = currentTime;
 
                     if (player.getHealth() < 1) {

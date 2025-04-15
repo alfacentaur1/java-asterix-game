@@ -46,7 +46,7 @@ public class Panoramix extends Character {
             }
         }
         //check if player has enough resources
-        if(shroomCounter < 2 || bucketCounter < 1 || carrotCounter < 2 ){
+        if(shroomCounter < 2 || bucketCounter < 2 || carrotCounter < 2 ){
             gc.setFill(javafx.scene.paint.Color.WHITE);
             gc.fillRoundRect(x, yPos, 220, 60, 10, 10);
             gc.setStroke(javafx.scene.paint.Color.BLACK);
