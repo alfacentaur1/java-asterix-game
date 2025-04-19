@@ -34,7 +34,6 @@ public class FileLoader {
                 tempMap.add(row);
             }
         } catch (IOException e) {
-            System.err.println("Exception in loading: " + e.getMessage());
             return null;
         }
 

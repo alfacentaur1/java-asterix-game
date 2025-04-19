@@ -22,6 +22,8 @@ import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
 import java.util.*;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 
 public class ViewController extends Application {
@@ -52,6 +54,7 @@ public class ViewController extends Application {
     private Watches watches;
     private MediaPlayer mediaPlayerSword;
     private boolean isSwordPlaying = false;
+    private static final Logger logger = Logger.getLogger(ViewController.class.getName());
 
 
     // Tile map definition (0 = path, 1 = house, 2 = grass, 3 = water, 4 = bridge horizontal)
@@ -96,6 +99,7 @@ public class ViewController extends Application {
         //if menu option would be load - load saved inventory
         if (loadInventory.equals("Yes")) {
             player.loadInventory(inventory);
+            logger.info("Inventory succesfully loaded.");
         }
     }
 
@@ -174,6 +178,7 @@ public class ViewController extends Application {
             handleMovement();
             if (pressedKeys.contains(KeyCode.T)) {
                 player.saveInventory(inventory);
+                logger.info("Inventory succesfully saved.");
             }
             if (pressedKeys.contains(KeyCode.Q)) {
                 inventoryVisible = true;
@@ -212,7 +217,6 @@ public class ViewController extends Application {
                         resetSwordSound.setCycleCount(1);
                         resetSwordSound.play();
                     }
-                    player.decreaseMana(player);
                     Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), e -> {
                         player.setPlayerImage(asterix);
                     }));
@@ -232,10 +236,12 @@ public class ViewController extends Application {
                     if (inventory.getSize() < 6 || inventory == null) {
                         if (itemToAdd instanceof Potion) {
                             player.setAttackPower(player.getAttackPower() * 2);
+
                         }
-                        inventory.addItem(itemToAdd);
-                        System.out.println("listing....");
-                        inventory.listInventory();
+                        if (!(itemToAdd instanceof Potion)) {
+                            inventory.addItem(itemToAdd);
+                            logger.info("Succesfully added to inventory.");
+                        }
                     }
                 }
 
@@ -349,17 +355,17 @@ public class ViewController extends Application {
                             switch (upgrade) {
                                 case "speed":
                                     inventory = new Inventory();
-                                    System.out.println("Potion: Speed crafted!");
+                                    logger.info("Potion: Speed crafted!");
                                     player.setSpeed(player.getSpeed() * 2);
                                     break;
                                 case "health":
                                     inventory = new Inventory();
-                                    System.out.println("Potion: Health crafted!");
+                                    logger.info("Potion: Health crafted!");
                                     player.setHealth(10);
                                     break;
                                 case "attack":
                                     inventory = new Inventory();
-                                    System.out.println("Potion: Attack crafted!");
+                                    logger.info("Potion: Attack crafted!");
                                     player.setAttackPower(3);
                                     break;
                             }

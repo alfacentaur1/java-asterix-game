@@ -26,6 +26,9 @@ public class Centurion extends Character{
     public Image getPlayerImage() {
         return playerImage;
     }
+    public void setHealth(int health) {
+        this.health = health;
+    }
 
     /**
      * we walk towards the finish, when we reach it, we switch the final destination to start

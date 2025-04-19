@@ -10,12 +10,12 @@ import java.util.Random;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 
 public class Asterix extends Character {
-    private String path_sword = getClass().getResource("/sword_roman.mp3").toExternalForm();
-    private Media media_sword = new Media(path_sword);
-    private MediaPlayer mediaPlayerSword = new MediaPlayer(media_sword);
+    private static final Logger logger = Logger.getLogger(Asterix.class.getName());
 
     private int attackPower = 1;
     private final int tile_size = ViewController.getTILE_SIZE();
@@ -57,6 +57,7 @@ public class Asterix extends Character {
         this.playerImage = new Image(getClass().getResourceAsStream("/asterix.png"));
     }
 
+
     public void setAttackPower(int attackPower) {
         this.attackPower = attackPower;
     }
@@ -78,6 +79,9 @@ public class Asterix extends Character {
                 y = new_y;
             }
         }
+    }
+    public int getAttackpower(){
+        return 3;
     }
     //function to get the tiles
     //we calculate x index from x coord + picture offset divided by tile
@@ -149,13 +153,14 @@ public class Asterix extends Character {
                     double y = c.getY();
                     centurionIterator.remove();
 
-                    if (random.nextInt(2) == 0) {
+//                    if (random.nextInt(2) == 0) {
                         Potion potion = new Potion(c.getX(), c.getY());
                         newItems.add(potion);
-                    }
+//                    }
                 }
             }
         }
+        decreaseMana(player);
         return newItems;
     }
 
@@ -187,10 +192,7 @@ public class Asterix extends Character {
                 if (Math.abs(r.getX() - player.getX()) < TILE_SIZE / 4 &&
                         Math.abs(r.getY() - player.getY()) < TILE_SIZE / 4) {
                     player.decreaseHealth();
-                    mediaPlayerSword.stop();
-                    mediaPlayerSword.play();
                     lastDamageTime = currentTime;
-
                     if (player.getHealth() < 1) {
                         return GameState.GAME_OVER;
                     }
@@ -201,14 +203,15 @@ public class Asterix extends Character {
                         Math.abs(c.getY() - player.getY()) < TILE_SIZE / 4) {
                     player.decreaseHealth();
                     player.decreaseHealth();
-                    mediaPlayerSword.stop();
-                    mediaPlayerSword.play();
                     lastDamageTime = currentTime;
 
                     if (player.getHealth() < 1) {
                         return GameState.GAME_OVER;
                     }
                 }
+            }
+            if(centurions.isEmpty() && romanSoldiers.isEmpty()){
+                return GameState.WON;
             }
         }
         return GameState.RUNNING;
@@ -238,9 +241,9 @@ public class Asterix extends Character {
             writer.write("Carrot " + carrotCounter + "\n");
             writer.write("WaterBucket " + waterBucketCounter + "\n");
             writer.write("Shroom " + shroomCounter + "\n");
-            System.out.println("Inventory saved successfully.");
+            logger.info("Inventory saved successfully.");
         } catch (IOException e) {
-            System.err.println("Error while saving inventory: " + e.getMessage());
+            logger.warning("Error while saving inventory: " + e.getMessage());
         }
 
     }
@@ -262,9 +265,9 @@ public class Asterix extends Character {
                     }
                 }
             }
-            System.out.println("Inventory loaded successfully.");
+            logger.info("Inventory loaded successfully.");
         } catch (IOException e) {
-            System.err.println("Error while loading inventory: " + e.getMessage());
+            logger.warning("Error while loading inventory: " + e.getMessage());
         }
 
     }

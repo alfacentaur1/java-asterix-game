@@ -4,8 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class EntityLoader {
+    private static final Logger logger = Logger.getLogger(EntityLoader.class.getName());
     /**
      *this method reads a file containing entity definitions and initializes objects based on the data
      * entities are added to a list and returned
@@ -95,11 +98,10 @@ public class EntityLoader {
                                     parts[7]
                             ));
 
-                    default -> System.err.println("Unknown entity: " + type);
+                    default -> logger.warning("Unknown entity: " + type);
                 }
             }
         } catch (IOException e) {
-            System.err.println("Error reading file: " + e.getMessage());
         }
         return entities;
     }

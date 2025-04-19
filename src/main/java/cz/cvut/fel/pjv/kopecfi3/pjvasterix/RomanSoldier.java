@@ -55,6 +55,10 @@ public class RomanSoldier extends Character {
         }
     }
 
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
     public void decreaseHealth(){
         this.health--;
     }

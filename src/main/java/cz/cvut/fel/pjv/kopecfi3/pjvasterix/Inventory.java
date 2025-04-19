@@ -25,6 +25,9 @@ public class Inventory {
             System.out.println(item);
         }
     }
+    public int getInventorySize() {
+        return items.size();
+    }
 
     //if mouseX and mouseY coord are near the item image AND player is near it too, we will add the item to inventory
 
@@ -37,9 +40,9 @@ public class Inventory {
      * @param items      list of available items
      * @param x          mouse x click coordinates
      * @param y          mouse x click coordinates
-     * @param tile_size  tile size
+     * @param tile_size  tile size(64 for now)
      * @param player     player character
-     * @param inventory player's inventory
+     * @param inventory player's inventory - capacity = 6
      * @return the found item, or null if no item is nearby
      */
     public Item searchItems(ArrayList<Item> items, double x, double y, int tile_size, Asterix player,Inventory inventory) {
