@@ -327,7 +327,7 @@ public class ViewController extends Application {
 
                 //if asterix is near obelix, interact
                 if (interactObelix()) {
-                    obelix.talk(gc);
+                    obelix.talk(gc,player);
                 }
 
                 //if asterix is near panoramix, interact

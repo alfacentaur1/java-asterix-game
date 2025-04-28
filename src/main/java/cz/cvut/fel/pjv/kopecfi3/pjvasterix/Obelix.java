@@ -6,8 +6,8 @@ import javafx.scene.text.Font;
 
 public class Obelix extends Character {
     private Image image;
-    private String text1 = "Hello Asterix, ";
-    private String text2 = "the water bucket should be somewhere near the water,";
+    private String text1 = "Hello Asterix, here are the boots";
+    private String text2 = "and the water bucket should be somewhere near the water,";
     private String text3 = "but I have forgotten, where I put it.";
     private String text4 = "BTW, for Panoramix you will need";
     private String text5 = "2 buckets, 2 shrooms, 2 carrots";
@@ -25,7 +25,7 @@ public class Obelix extends Character {
      * function to interact with asterix,when asterix comes close to obelix
      * @param gc graphics context
      */
-    public void talk(GraphicsContext gc) {
+    public void talk(GraphicsContext gc,Asterix asterix) {
         double yPos = y - 78;
 
         gc.setFill(javafx.scene.paint.Color.WHITE);
@@ -42,6 +42,9 @@ public class Obelix extends Character {
         gc.fillText(text3, x + 10, yPos + 45);
         gc.fillText(text4, x + 10, yPos + 60);
         gc.fillText(text5, x + 10, yPos + 75);
+
+        asterix.setBoots(true);
+
     }
 }
 

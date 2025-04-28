@@ -18,6 +18,7 @@ public class Asterix extends Character {
     private static final Logger logger = Logger.getLogger(Asterix.class.getName());
 
     private int attackPower = 1;
+    private boolean hasBoots = false;
     private final int tile_size = ViewController.getTILE_SIZE();
     private final int map_width = ViewController.getMapWidth();
     private final int map_height = ViewController.getMapHeight();
@@ -47,9 +48,20 @@ public class Asterix extends Character {
         return playerImage;
     }
 
+    public boolean hasBoots(){
+        return hasBoots;
+    }
+
+    public void setBoots(boolean hasBoots){
+        this.hasBoots = hasBoots;
+    }
 
     public void setPlayerImage(Image playerImage) {
         this.playerImage = playerImage;
+    }
+
+    public int getAttackpower(){
+        return 3;
     }
 
     public Asterix(double x, double y, int health) {
@@ -73,15 +85,21 @@ public class Asterix extends Character {
     public void move(int dx, int dy, int[][] tileMap) {
         int new_x = (int) x + dx;
         int new_y = (int) y + dy;
-        if (getCurrentTile(tileMap, (int) new_x - 5, (int) new_y - 5) != 1 && getCurrentTile(tileMap, new_x - 5, new_y - 5) != 3) {
+        int current_tile = getCurrentTile(tileMap, (int) new_x - 5, (int) new_y - 5);
+        if (current_tile != 1 && current_tile != 3) {
             if (new_x >= -5 && new_x < map_width * tile_size && new_y >= -5 && new_y < map_height * tile_size) {
-                x = new_x;
-                y = new_y;
+                if(current_tile == 4){
+                    if(hasBoots){
+                        x = new_x;
+                        y = new_y;
+                    }
+                }
+                else if(current_tile != 4){
+                    x = new_x;
+                    y = new_y;
+                }
             }
         }
-    }
-    public int getAttackpower(){
-        return 3;
     }
     //function to get the tiles
     //we calculate x index from x coord + picture offset divided by tile
@@ -282,6 +300,8 @@ public class Asterix extends Character {
         }
     }
 }
+
+
 
 
 

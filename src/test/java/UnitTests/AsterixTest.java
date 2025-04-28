@@ -2,7 +2,6 @@ package UnitTests;
 
 import cz.cvut.fel.pjv.kopecfi3.pjvasterix.Asterix;
 import javafx.scene.image.Image;
-import javafx.scene.media.MediaPlayer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +23,18 @@ public class AsterixTest {
             {2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2},
             {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2}
     };
+    private int[][] tileMap2_with4 = {
+            {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+            {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+            {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+            {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+            {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+            {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+            {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+            {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+            {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4},
+            {4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4}
+    };
     @BeforeEach
     public void setUp() {
         asterix = new Asterix(380,370,5);
@@ -35,6 +46,7 @@ public class AsterixTest {
     public void testMoveIsAvalaibleToMove() {
         Asterix asterixSpy = Mockito.spy(asterix);
 
+        asterixSpy.setBoots(true);
         asterixSpy.move(1,1,tileMap);
 
         double yAfterMove = asterixSpy.getY();
@@ -45,13 +57,32 @@ public class AsterixTest {
     }
 
     /**
+     * test with no boots
+     */
+    @Test
+    public void testMoveIsNotAvalaibleToMoveHasNoBoots() {
+        Asterix asterixSpy = Mockito.spy(asterix);
+
+        asterixSpy.setBoots(false);
+        asterixSpy.move(1,1,tileMap2_with4);
+
+        double yAfterMove = asterixSpy.getY();
+        double xAfterMove = asterixSpy.getX();
+
+        Assertions.assertEquals(370,yAfterMove);
+        Assertions.assertEquals(380,xAfterMove);
+    }
+
+    /**
      * Asterix would be out of bounds, so we stop him
+     * has boots
      */
     @Test
     public void testMoveIsNotAvalaibleToMove() {
         Asterix asterixSpy = Mockito.spy(asterix);
 
         asterixSpy.move(1000,1000,tileMap);
+        asterixSpy.setBoots(true);
 
         double yAfterMove = asterixSpy.getY();
         double xAfterMove = asterixSpy.getX();
