@@ -575,7 +575,7 @@ public class ViewController extends Application {
         double currentHealthWidth = healthBarWidth * healthPercentage;
 
         gc.setFill(Color.DARKGRAY);
-        gc.fillRect(statusBarX, statusBarY - 10, 180, 90);
+        gc.fillRect(statusBarX, statusBarY - 10, 180, 130);
 
         // health
         gc.setFill(Color.RED);
@@ -593,6 +593,12 @@ public class ViewController extends Application {
         Image asterix = new Image(getClass().getResourceAsStream("/asterix.png"));
         gc.drawImage(asterix, statusBarX - 5, statusBarY + 10, 50, 50);
 
+        if(player.hasBoots()){
+            gc.fillText("Boots: yes", statusBarX + 40, statusBarY + 85);
+        } else {
+            gc.fillText("Boots: no", statusBarX + 40, statusBarY + 85);
+        }
+
         // Mana
         gc.setFill(Color.BLACK);
         gc.setFont(new Font(12));
@@ -601,6 +607,7 @@ public class ViewController extends Application {
         int manaSize = 10; //px of one brick
         double manaStartX = statusBarX + 40; //start y axis
         double manaStartY = statusBarY + 60; //start x axis
+
 
 
         gc.setFill(Color.DARKBLUE);
