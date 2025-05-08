@@ -10,6 +10,7 @@ public class RomanSoldier extends Character {
     private int end_x;
     private int start_y;
     private int end_y;
+    private static final Image SHARED_IMAGE = new Image(RomanSoldier.class.getResourceAsStream("/roman.png.png"));
     private Image playerImage;
     private String walk_direction; //y or x
     private double speed = 0.3;
@@ -21,7 +22,7 @@ public class RomanSoldier extends Character {
         this.end_x = end_x;
         this.start_y = start_y;
         this.end_y = end_y;
-        this.playerImage = new Image(getClass().getResourceAsStream("/roman.png.png"));
+        this.playerImage = SHARED_IMAGE;
         this.walk_direction = walk_direction;
     }
 

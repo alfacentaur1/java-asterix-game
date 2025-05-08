@@ -8,6 +8,7 @@ public class Villager extends Character {
     private int end_x;
     private int start_y;
     private int end_y;
+    private static final Image SHARED_IMAGE = new Image(Villager.class.getResourceAsStream("/fisherman.png"));
     private Image playerImage;
     private String walk_direction; //y or x
     private double speed = 0.4;
@@ -20,7 +21,7 @@ public class Villager extends Character {
         this.start_y = start_y;
         this.end_y = end_y;
 
-        this.playerImage = new Image(getClass().getResourceAsStream("/fisherman.png"));
+        this.playerImage = SHARED_IMAGE;
         this.walk_direction = walk_direction;
     }
 

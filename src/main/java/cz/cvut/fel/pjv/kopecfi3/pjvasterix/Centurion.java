@@ -9,6 +9,7 @@ public class Centurion extends Character{
     private int end_x;
     private int start_y;
     private int end_y;
+    private static final Image SHARED_IMAGE = new Image(Centurion.class.getResourceAsStream("/centurion.png"));
     private Image playerImage;
     private String walk_direction; //y or x
     private double speed = 0.3;
@@ -19,7 +20,7 @@ public class Centurion extends Character{
         this.end_x = end_x;
         this.start_y = start_y;
         this.end_y = end_y;
-        this.playerImage = new Image(getClass().getResourceAsStream("/centurion.png"));
+        this.playerImage = SHARED_IMAGE;
         this.walk_direction = walk_direction;
     }
 
