@@ -366,7 +366,10 @@ public class ViewController extends Application {
                                 case "attack":
                                     inventory = new Inventory();
                                     logger.info("Potion: Attack crafted!");
-                                    player.setAttackPower(3);
+                                    if(player.getAttackPower() <= 3){
+                                        player.setAttackPower(3);
+                                    }
+
                                     break;
                             }
                         }
