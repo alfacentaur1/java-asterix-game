@@ -34,10 +34,12 @@ public class GameplayTest {
         Asterix asterixOriginal = new Asterix(5,5,10);
         asterix = Mockito.spy(asterixOriginal);
 
+        //setup items on map
         items.add(carrot);
         items.add(shroom);
         items.add(waterBucket);
 
+        //set up enemies on map
         centurion = new Centurion(100, 100, 100, 150, 100, 150, "y");
         centurions = new ArrayList<>();
         centurions.add(centurion);
@@ -54,6 +56,7 @@ public class GameplayTest {
     public void testPotionInteraction() {
         int tileSize = 64;
 
+        //check item positions
         Mockito.when(carrot.getX()).thenReturn(30.0);
         Mockito.when(carrot.getY()).thenReturn(30.0);
 

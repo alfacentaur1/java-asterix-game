@@ -43,6 +43,7 @@ public class AsterixTest {
         asterix.setPlayerImage(mockImage);
     }
     @Test
+    //asterix has boots, check if he can move
     public void testMoveIsAvalaibleToMove() {
         Asterix asterixSpy = Mockito.spy(asterix);
 
