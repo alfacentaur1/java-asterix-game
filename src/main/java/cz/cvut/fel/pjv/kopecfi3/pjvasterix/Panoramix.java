@@ -6,10 +6,21 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.text.Font;
 import java.util.ArrayList;
 
-public class Panoramix extends Character {
+public class Panoramix {
+    private final double x;
+    private final double y;
     private final Image image = new Image(getClass().getResourceAsStream("/druid.png.png"));
-    public Panoramix(int x, int y, int health) {
-        super(x, y, health);
+    public Panoramix(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getX() {
+        return x;
     }
 
     public Image getImage() {

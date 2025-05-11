@@ -58,16 +58,14 @@ public class EntityLoader {
                     case "Obelix" ->
                             entities.add(new Obelix(
                                     Integer.parseInt(parts[1]),
-                                    Integer.parseInt(parts[2]),
-                                    Integer.parseInt(parts[3])
+                                    Integer.parseInt(parts[2])
                             ));
 
                     case "Panoramix" ->
                             entities.add(new Panoramix(
                                     Integer.parseInt(parts[1]),
-                                    Integer.parseInt(parts[2]),
-                                    Integer.parseInt(parts[3])
-                            ));
+                                    Integer.parseInt(parts[2]))
+                            );
 
                     case "Carrot" ->
                             entities.add(new Carrot(

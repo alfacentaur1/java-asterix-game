@@ -15,7 +15,7 @@ public class GameplayTest {
     private Inventory inventory;
     private Asterix asterix;
     private ArrayList<Item> items;
-    private Panoramix panoramix = new Panoramix(1,1,1);
+    private Panoramix panoramix = new Panoramix(1,1);
     Carrot carrot;
     WaterBucket waterBucket;
     Shroom shroom;

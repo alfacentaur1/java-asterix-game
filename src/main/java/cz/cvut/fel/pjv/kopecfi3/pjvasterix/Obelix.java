@@ -4,20 +4,32 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 
-public class Obelix extends Character {
+public class Obelix {
     private Image image;
     private String text1 = "Hello Asterix, here are the boots";
     private String text2 = "and the water bucket should be somewhere near the water,";
     private String text3 = "but I have forgotten, where I put it.";
     private String text4 = "BTW, for Panoramix you will need";
     private String text5 = "2 buckets, 2 shrooms, 2 carrots";
-    public Obelix(int x, int y, int health) {
-        super(x, y, health);
+    private double x;
+    private double y;
+
+    public Obelix(int x, int y) {
         image = new Image(getClass().getResourceAsStream("/obelix.png"));
+        this.x = x;
+        this.y = y;
     }
 
     public Image getImage() {
         return image;
+    }
+
+    public double getX(){
+        return x;
+    }
+
+    public double getY(){
+        return y;
     }
 
 

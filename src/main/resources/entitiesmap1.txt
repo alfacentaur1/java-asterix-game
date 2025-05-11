@@ -1,10 +1,10 @@
-Asterix 380 370 5
+Asterix 380 370 10
 RomanSoldier 120 520 120 400 120 150 x
 RomanSoldier 120 540 120 400 120 150 x
 RomanSoldier 670 100 120 400 100 500 y
-Obelix 20 520 10
+Obelix 20 520
 Villager 330 330 10 330 400 330 120 x
-Panoramix 300 350 10
+Panoramix 300 350
 Carrot 900 390
 Shroom 130 5
 WaterBucket 900 70

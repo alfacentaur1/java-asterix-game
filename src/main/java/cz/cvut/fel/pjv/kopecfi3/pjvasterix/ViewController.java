@@ -111,14 +111,6 @@ public class ViewController extends Application {
         return TILE_SIZE;
     }
 
-    public static int getScreenWidth() {
-        return SCREEN_WIDTH;
-    }
-
-    public static int getScreenHeight() {
-        return SCREEN_HEIGHT;
-    }
-
     public static int getMapWidth() {
         return MAP_WIDTH;
     }

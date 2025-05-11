@@ -27,7 +27,7 @@ public class Asterix extends Character {
     private long lastDamageTime = 0;
     private int manaCapacity = 5;
     private int mana = 5;
-    private GameState gameState = GameState.RUNNING;
+    private Image SHARED_IMAGE = new Image(getClass().getResourceAsStream("/asterix.png"));
 
     public int getAttackPower() {
         return attackPower;
@@ -66,7 +66,7 @@ public class Asterix extends Character {
 
     public Asterix(double x, double y, int health) {
         super((int)x, (int)y, 10);
-        this.playerImage = new Image(getClass().getResourceAsStream("/asterix.png"));
+        this.playerImage = SHARED_IMAGE;
     }
 
 
@@ -266,6 +266,8 @@ public class Asterix extends Character {
 
     }
     public void loadInventory(Inventory inventory) {
+        //buffered - reads bigger block of data -> effectivity
+
         try (BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/inventoryAsterix"))) {
             String line;
             while ((line = reader.readLine()) != null) {
