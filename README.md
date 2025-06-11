@@ -71,7 +71,11 @@ Description: Centurions are the backbone of the Roman army. With higher health a
 
 
 Regular Roman Soldier
+
+
 ![image](https://github.com/user-attachments/assets/e15079cc-2c1b-47d5-a803-f277b62b0ba2)
+
+
 Health: 3
 
 Attack: 1
