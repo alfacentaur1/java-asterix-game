@@ -7,6 +7,8 @@ Get ready for a quest where Romans fall at your feet, and the only thing you’l
 
 Starting the game
 Start easily by running the Menu class.
+
+
 ![image](https://github.com/user-attachments/assets/225ae5f3-754d-441d-9f20-cd63bb74fb02)
 
 
@@ -56,7 +58,11 @@ Character Types in Asterix's Quest RPG
 Here’s a quick overview of the characters you’ll encounter:
 
 Centurion
+
+
 ![image](https://github.com/user-attachments/assets/e3711226-7400-4515-82db-6a778ceb9e7a)
+
+
 Health: 5
 
 Attack: 2
@@ -74,7 +80,11 @@ Description: The basic Roman soldiers are commonly encountered throughout the ga
 
 
 Fisherman (Regular Villager)
+
+
 ![image](https://github.com/user-attachments/assets/2bd0ef0c-9655-4419-9801-d0c8afc953ed)
+
+
 Health: N/A
 
 Attack: N/A
@@ -83,7 +93,11 @@ Description: A regular villager with no combat skills. The fisherman is useful f
 
 
 Obelix
+
+
 ![image](https://github.com/user-attachments/assets/aee6aaeb-8aec-422d-8cd7-6cb44862a523)
+
+
 Health: N/A
 
 Attack: N/A
@@ -92,7 +106,11 @@ Description: Obelix is your trusty, non-combatant companion. He can help you fin
 
 
 Panoramix
+
+
 ![image](https://github.com/user-attachments/assets/742671d5-1e02-4499-9d55-da0158292b90)
+
+
 Health: N/A
 
 Attack: N/A
@@ -138,7 +156,10 @@ Description: Need to outrun the Romans or dodge their attacks? This potion will 
 
 Centurion's Elixir
 
+
 ![image](https://github.com/user-attachments/assets/61b8b5eb-719f-4040-91ac-2d518119a970)
+
+
 
 Effect: Doubles your attack power (permanently).
 
@@ -148,7 +169,10 @@ Description: A powerful Roman concoction, the Centurion's Elixir doubles your at
 
 How to Reach the Ingredients
 
+
 ![image](https://github.com/user-attachments/assets/e5934275-9248-44ac-9355-07f3cfe0b47c)
+
+
 
 Some of the ingredients you need for crafting potions are located on islands across the water. However, Asterix is too small and afraid of water, so he can’t reach these ingredients directly. You need to obtain shoes from Obelix to be able to walk over the bridge, because Asterix has too small feet.
 
@@ -162,9 +186,15 @@ Tip: The bridge is the only way to access the islands, so be sure to use it when
 
 
 Hero Stats: Asterix
+
+
 ![image](https://github.com/user-attachments/assets/0b90338b-35ff-42e1-bb83-96dc0e09ecff)
 
+
+
 Health
+
+
 
 Health: 10
 
@@ -173,12 +203,16 @@ Description: Asterix, the brave and clever Gaul, starts with full health and can
 
 Attack
 
+
+
 Attack: 1
 
 Description: Asterix may not be the strongest fighter, but his wit and agility help him defeat enemies. His basic attack power is 1, making him capable of dealing damage, but you can increase his power with potions or items!
 
 
 Mana
+
+
 
 Mana: 5
 
